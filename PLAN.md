@@ -214,7 +214,8 @@ Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supa
       _backend/auth.py; 7 tests (valid, expired, wrong secret, wrong audience, service_role bypass, missing env var 503, missing sub); 41 tests green._
 - [x] **P6.5 Data layer via `supabase-py` carrying the user JWT** (NOT asyncpg — per ADR). One thin module.
       _backend/db.py; DB class; new client per request (thread-safe); postgrest.auth(user_jwt) so RLS fires; covers all 6 tables + 2 RPCs; 41 tests green._
-- [ ] **P6.6 Inventory endpoints** (GET/POST/PUT/DELETE, soft-delete via `is_active`). Tests: auth required, 404/403.
+- [x] **P6.6 Inventory endpoints** (GET/POST/PUT/DELETE, soft-delete via `is_active`). Tests: auth required, 404/403.
+      _`backend/routers/inventory.py` + 8 tests; fixed `patch` → `app.dependency_overrides`; bare `raise` → 500; 49 tests green._
 - [ ] **P6.7 Companions endpoints** + feedback (implement the verdict→like/dislike rule from the spec). Tests.
 - [ ] **P6.8 Sessions + session_drinks endpoints**; implement "current session" per the spec. Tests.
 - [ ] **P6.9 Point `/recommend` at the user's real inventory** (replace the hardcoded fixture from Task 3).
