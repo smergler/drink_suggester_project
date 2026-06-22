@@ -25,7 +25,7 @@ _All "mock" numbers are from offline runs with seeded-violation stubs — no tok
 | After tightening the pantry system prompt | **100%** | — | — | Model now flags honey/spices as `perishable` ("grab these"). Real before/after. |
 | Live + 4 adversarial classics added (Negroni w/o gin, Sazerac, Mai Tai, count=5 from 3 bottles) | **100% grounded** | — | — | Model flags, doesn't fake — substitutes or marks `missing`. But see below: grounding ≠ makeable. |
 | Mock baseline — current 12-scenario set + makeable metric added | **53%** | **88%** | **50%** | Lower grounding% expected: adversarial scenarios drag the mock average down (they're designed to catch violations). Makeable 88% means most open-ended suggestions are anchored in ≥1 owned bottle. |
-| **Next: live run** | — | — | — | Run `evals.run_evals --live --judge` and fill in here. |
+| **Live run** (claude-haiku-4-5, all 12 scenarios, + judge) | **100%** | **94%** | **75%** | JUDGE: constraints respected 74%, occasion fit 4.6/5, recipe plausibility 4.4/5, **name accuracy 58%** — model grounds correctly but misnames ~42% of drinks (e.g. calls a Boulevardier a "Negroni"). Next lever: name-accuracy prompt work or structured output with canonical name validation. |
 
 ## Engineering decisions worth talking about (the "why" matters more than the "what")
 
@@ -137,7 +137,9 @@ business is ever revisited, the Wizard-of-Oz test above is the starting point �
   Mock baseline: MAKEABLE 88%, MAKEABLE-NOW 50% across open-ended scenarios.
 - [x] **FastAPI + single-page frontend** deployed locally. `POST /recommend`, `GET /inventory`,
   rate-limited (10/min per IP), input-length capped, XSS-safe frontend. Ready for Railway deploy.
-- [ ] **Live eval run** — needs `ANTHROPIC_API_KEY`. Run `evals.run_evals --live --judge` to
-  get grounding + makeable + judge numbers; fill into RESUME_STORY.md and README metrics table.
+- [x] **Live eval run** complete. GROUNDING 100%, MAKEABLE 94%, MAKEABLE-NOW 75%.
+  JUDGE: constraints 74%, occasion fit 4.6/5, plausibility 4.4/5, **name accuracy 58%** —
+  the model grounds correctly but misnames ~42% of drinks (Boulevardier called a "Negroni" etc).
+  This is the next concrete improvement target.
 - [ ] **Railway deploy** (human steps: `railway login`, `railway up`, set key in dashboard);
   then live URL goes in README + here.

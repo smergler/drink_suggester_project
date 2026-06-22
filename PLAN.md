@@ -14,7 +14,7 @@ Git: use the absolute binary `/opt/homebrew/bin/git` (the shell `git` wrapper is
 
 ---
 
-## Task 1 — Makeable-rate metric (deterministic)  ·  Status: in progress
+## Task 1 — Makeable-rate metric (deterministic)  ·  Status: done
 
 Goal: a metric that complements grounding. Grounding = "honest about ownership";
 makeable = "actually buildable from owned bottles." Closes the all-`missing` Mai Tai gap.
@@ -40,10 +40,11 @@ makeable = "actually buildable from owned bottles." Closes the all-`missing` Mai
       print `MAKEABLE RATE` and `MAKEABLE-NOW RATE` lines under `GROUNDING RATE`.
       **Verify:** `.venv/bin/python -m evals.run_evals` prints both, no crash.
       _Wired; fixed is_makeable_now to also re-validate inventory claims (hallucination bug); mock: MAKEABLE 88%, MAKEABLE-NOW 50%; 30 tests green._
-- [ ] **1.6 Run live once**: `.venv/bin/python -m evals.run_evals --live`. Record grounding + makeable
+- [x] **1.6 Run live once**: `.venv/bin/python -m evals.run_evals --live`. Record grounding + makeable
       numbers in `RESUME_STORY.md` metrics table. Commit (see git note above).
+      _Live: GROUNDING 100%, MAKEABLE 94%, MAKEABLE-NOW 75%. Recorded in RESUME_STORY + README._
 
-## Task 2 — Run the LLM judge live  ·  Status: in progress
+## Task 2 — Run the LLM judge live  ·  Status: done
 
 Goal: produce the quality numbers grounding can't (built + unit-tested, never run live).
 
@@ -55,9 +56,11 @@ Goal: produce the quality numbers grounding can't (built + unit-tested, never ru
       Add a `JudgeSummary.name_accuracy_rate`. Add a unit test in `tests/test_judge.py`.
       **Verify:** `.venv/bin/python -m pytest -q` green. _(Catches "Boulevardier called a Negroni".)_
       _Done; name_accurate=None when absent (excluded from rate to avoid inflation); prompt clarified for invented names; name_accuracy_n denominator exposed; 34 tests green._
-- [ ] **2.3 Run** `.venv/bin/python -m evals.run_evals --live --judge`. Capture constraint pass rate,
+- [x] **2.3 Run** `.venv/bin/python -m evals.run_evals --live --judge`. Capture constraint pass rate,
       occasion fit, plausibility (and name accuracy if 2.2 done).
-- [ ] **2.4 Record** the judge numbers in `RESUME_STORY.md`; commit.
+      _constraints 74%, occasion fit 4.6/5, plausibility 4.4/5, name accuracy 58% (19/19 assessed)._
+- [x] **2.4 Record** the judge numbers in `RESUME_STORY.md`; commit.
+      _Recorded; name accuracy 58% flagged as next improvement target._
 
 ## Task 3 — Deploy a thin vertical slice (live URL)  ·  Status: in progress
 
