@@ -18,8 +18,9 @@ deterministic **eval harness** that measures and protects recommendation quality
 | Milestone | Grounding rate | Notes |
 |---|---|---|
 | Mock baseline (offline, seeded-violation stubs) | **64%** | Proved the scorer catches hallucinated ownership before spending a token. |
-| **Live baseline** (claude-haiku-4-5) | **91%** | 10/11 suggestions fully grounded; model respected the structured `source` labels. |
-| After pantry-boundary fix + adversarial scenarios | _TBD_ | The before/after the project exists to produce. |
+| **Live baseline** (claude-haiku-4-5) | **91%** | 10/11 grounded. The 1 failure: model labeled honey/cinnamon as `pantry` (over-assumed on-hand). |
+| After tightening the pantry definition in the system prompt | **100%** | Model now flags honey/spices as `perishable` ("grab these") instead of assuming them. Real before/after. |
+| (next) add adversarial scenarios | _TBD, by design < 100%_ | 100% on easy cases is **not** a credible gate. Adding harder cases to give the metric teeth — a metric that always passes proves nothing. |
 
 ## Engineering decisions worth talking about (the "why" matters more than the "what")
 
@@ -73,10 +74,13 @@ output as something to be measured and engineered, not trusted.
 
 ## Open decisions / next steps
 
-- [ ] **Pantry boundary:** treat honey/cinnamon as legitimate "you may not have this"
-  flags (keeps metric honest) vs. widen the pantry allowlist (easier, weaker metric).
-  *Leaning: keep honest + fix the hot-water normalization bug.*
-- [ ] Add adversarial scenarios the *live* model actually trips on (the seeded mock
-  violations are too easy for the real model — grounding would otherwise sit near 100%).
+- [x] **Pantry boundary:** decided — honey/cinnamon stay as legitimate "grab these"
+  flags (kept the metric honest). Fixed via system-prompt tightening, not by widening
+  the allowlist. Also fixed the hot-water normalization bug in the scorer.
+- [ ] **Add adversarial scenarios the live model actually trips on — now top priority.**
+  Live grounding hit 100% on the current set, which means the eval is too easy to be a
+  credible quality gate. Need cases targeting known LLM grounding failure modes (e.g.
+  asking for a named classic whose base spirit the user doesn't own, to see if the
+  model fakes it as `inventory` vs. substitutes vs. flags `missing`).
 - [ ] Wrap the core in a minimal FastAPI + one-screen frontend, deploy (live URL).
 - [ ] README with an architecture diagram + the two "why I decided X" writeups.

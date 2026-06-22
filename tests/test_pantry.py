@@ -14,6 +14,14 @@ def test_pantry_staples():
     assert not is_pantry("agave syrup")  # deliberately not a staple
 
 
+def test_temperature_modifiers_still_count_as_pantry():
+    assert is_pantry("hot water")
+    assert is_pantry("Boiling Water")
+    assert is_pantry("chilled water")
+    assert not is_pantry("honey")          # not a staple — must be flagged
+    assert not is_pantry("cinnamon stick")
+
+
 def test_perishable_exact_and_substring():
     assert is_perishable("lime")
     assert is_perishable("fresh lime juice")   # substring tolerance

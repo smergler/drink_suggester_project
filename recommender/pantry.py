@@ -45,8 +45,17 @@ def normalize(name: str) -> str:
     return " ".join(name.lower().strip().replace(".", "").split())
 
 
+# Temperature/state descriptors that don't change what an ingredient is.
+_PANTRY_MODIFIERS = {"hot", "cold", "warm", "boiling", "chilled", "iced"}
+
+
 def is_pantry(name: str) -> bool:
-    return normalize(name) in PANTRY_STAPLES
+    n = normalize(name)
+    if n in PANTRY_STAPLES:
+        return True
+    # "hot water" -> "water": strip leading temperature descriptors
+    stripped = " ".join(t for t in n.split() if t not in _PANTRY_MODIFIERS)
+    return stripped in PANTRY_STAPLES
 
 
 def is_perishable(name: str) -> bool:
