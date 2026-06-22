@@ -220,7 +220,8 @@ Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supa
       _`backend/routers/companions.py` (13 tests) + `backend/routers/session_drinks.py` (8 tests); fuzzy bottle→category resolution via `match_bottle`; bumped bottle limit to 1000 to avoid silent truncation; 71 tests green._
 - [x] **P6.8 Sessions + session_drinks endpoints**; implement "current session" per the spec. Tests.
       _`backend/routers/sessions.py` (11 tests); `/sessions/active` registered before `/{id}` to prevent routing conflict; added ownership guard on `GET /{id}/drinks`; 82 tests green._
-- [ ] **P6.9 Point `/recommend` at the user's real inventory** (replace the hardcoded fixture from Task 3).
+- [x] **P6.9 Point `/recommend` at the user's real inventory** (replace the hardcoded fixture from Task 3).
+      _`app/main.py` overhauled: all routers wired, real DB inventory fetch, session lifecycle (create/reuse), drinks saved to session_drinks, `X-Session-Id` header; fixed JWT vs user_id bug in all routers' `_db`; 6 endpoint tests; 88 tests green._
 - [ ] **P6.10 Frontend:** login, inventory manage, companions, sessions, recommend screen (extend Task 3's page).
 - [ ] **P6.11 RLS isolation test:** two users; confirm user A cannot read/write user B's rows.
 - [ ] **P6.12 🧑 Deploy** (Railway backend + Supabase + Vercel/static frontend); set all secrets (human).

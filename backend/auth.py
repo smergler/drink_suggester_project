@@ -17,7 +17,8 @@ import jwt
 from fastapi import Depends, HTTPException
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
-_bearer = HTTPBearer()
+bearer_scheme = HTTPBearer()
+_bearer = bearer_scheme  # internal alias used by get_current_user
 
 
 def get_current_user(

@@ -3,15 +3,19 @@
 from __future__ import annotations
 
 from fastapi import APIRouter, Depends, HTTPException, Query
+from fastapi.security import HTTPAuthorizationCredentials
 
-from backend.auth import get_current_user
+from backend.auth import bearer_scheme, get_current_user
 from backend.db import DB
 
 router = APIRouter(prefix="/sessions", tags=["sessions"])
 
 
-def _db(user_jwt: str = Depends(get_current_user)) -> DB:
-    return DB(user_jwt)
+def _db(
+    creds: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    _: str = Depends(get_current_user),
+) -> DB:
+    return DB(creds.credentials)
 
 
 # IMPORTANT: /sessions/active MUST be registered before /sessions/{id} so FastAPI

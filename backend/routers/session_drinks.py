@@ -5,9 +5,10 @@ from __future__ import annotations
 from typing import Literal
 
 from fastapi import APIRouter, Depends, HTTPException
+from fastapi.security import HTTPAuthorizationCredentials
 from pydantic import BaseModel
 
-from backend.auth import get_current_user
+from backend.auth import bearer_scheme, get_current_user
 from backend.db import DB
 from recommender.inventory_match import match_bottle
 from recommender.schemas import Bottle
@@ -19,8 +20,11 @@ class VerdictIn(BaseModel):
     verdict: Literal["liked", "disliked", "neutral"]
 
 
-def _db(user_jwt: str = Depends(get_current_user)) -> DB:
-    return DB(user_jwt)
+def _db(
+    creds: HTTPAuthorizationCredentials = Depends(bearer_scheme),
+    _: str = Depends(get_current_user),
+) -> DB:
+    return DB(creds.credentials)
 
 
 @router.patch("/{drink_id}/verdict")
