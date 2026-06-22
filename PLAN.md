@@ -14,27 +14,32 @@ Git: use the absolute binary `/opt/homebrew/bin/git` (the shell `git` wrapper is
 
 ---
 
-## Task 1 — Makeable-rate metric (deterministic)  ·  Status: not started
+## Task 1 — Makeable-rate metric (deterministic)  ·  Status: in progress
 
 Goal: a metric that complements grounding. Grounding = "honest about ownership";
 makeable = "actually buildable from owned bottles." Closes the all-`missing` Mai Tai gap.
 
-- [ ] **1.1 Decide + document the definition** in a comment at the top of the new file:
+- [x] **1.1 Decide + document the definition** in a comment at the top of the new file:
       `uses_inventory` = suggestion has ≥1 ingredient with `source == inventory` that matches an owned bottle;
       `makeable_now` = `uses_inventory` AND zero `missing` ingredients.
-- [ ] **1.2 Add `open_ended: bool = True` field** to the `Scenario` dataclass in `evals/fixtures.py`.
+      _Definitions documented in module docstring of `evals/makeable.py`._
+- [x] **1.2 Add `open_ended: bool = True` field** to the `Scenario` dataclass in `evals/fixtures.py`.
       Set `open_ended=False` on the four named-drink scenarios (negroni_no_gin, sazerac_no_peychauds,
       mai_tai_bourbon_only) — a user who *demands* a specific classic accepts a shopping list.
       Leave `high_count_pad` and all occasion/mood scenarios `open_ended=True`.
-- [ ] **1.3 Create `evals/makeable.py`** with: `is_makeable(suggestion, inventory) -> bool` (uses_inventory),
+      _Field added to `Scenario`; `open_ended=False` set on `negroni_no_gin`, `sazerac_no_peychauds`, `mai_tai_bourbon_only`._
+- [x] **1.3 Create `evals/makeable.py`** with: `is_makeable(suggestion, inventory) -> bool` (uses_inventory),
       `is_makeable_now(suggestion, inventory) -> bool`, and `score(suggestions, inventory) -> MakeableReport`
       (dataclass with `.uses_inventory_rate` and `.makeable_now_rate`). Reuse `recommender.inventory_match.match_bottle`.
-- [ ] **1.4 Create `tests/test_makeable.py`**: all-`missing` Mai-Tai-shaped suggestion → not makeable;
+      _`evals/makeable.py` created with all three functions and `MakeableReport` dataclass._
+- [x] **1.4 Create `tests/test_makeable.py`**: all-`missing` Mai-Tai-shaped suggestion → not makeable;
       all-`inventory` Boulevardier-shaped → makeable_now; 1 owned + 1 missing → uses_inventory True, makeable_now False.
       **Verify:** `.venv/bin/python -m pytest -q` all green.
-- [ ] **1.5 Wire into `evals/run_evals.py`**: compute makeable over `open_ended` scenarios only;
+      _4 tests added; all 29 tests pass._
+- [x] **1.5 Wire into `evals/run_evals.py`**: compute makeable over `open_ended` scenarios only;
       print `MAKEABLE RATE` and `MAKEABLE-NOW RATE` lines under `GROUNDING RATE`.
       **Verify:** `.venv/bin/python -m evals.run_evals` prints both, no crash.
+      _Wired; fixed is_makeable_now to also re-validate inventory claims (hallucination bug); mock: MAKEABLE 88%, MAKEABLE-NOW 50%; 30 tests green._
 - [ ] **1.6 Run live once**: `.venv/bin/python -m evals.run_evals --live`. Record grounding + makeable
       numbers in `RESUME_STORY.md` metrics table. Commit (see git note above).
 

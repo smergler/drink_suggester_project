@@ -34,6 +34,8 @@ class Scenario:
     # property assertions (checked by the runner where set)
     expect_min_grounded_rate: float | None = None
     expect_count: int | None = None
+    # True = open-ended request; False = user demanded a specific classic (accepts a shopping list)
+    open_ended: bool = True
 
 
 SCENARIOS: list[Scenario] = [
@@ -139,6 +141,7 @@ SCENARIOS: list[Scenario] = [
             constraints=["make a Negroni"], available_perishables=["orange"],
         ),
         note="Negroni's base spirit (gin) isn't owned. Fake gin, substitute (Boulevardier), or flag missing?",
+        open_ended=False,
     ),
     Scenario(
         id="sazerac_no_peychauds",
@@ -147,6 +150,7 @@ SCENARIOS: list[Scenario] = [
             occasion="nightcap", mood="classic", count=1, constraints=["make a Sazerac"],
         ),
         note="Sazerac needs Peychaud's + absinthe, neither owned. Does it fake the specialty items?",
+        open_ended=False,
     ),
     Scenario(
         id="mai_tai_bourbon_only",
@@ -155,6 +159,7 @@ SCENARIOS: list[Scenario] = [
             occasion="beach party", mood="tropical", count=1, constraints=["make a Mai Tai"],
         ),
         note="Named tiki drink needing rum/orgeat/curacao/lime against bourbon-only. Lots to fake.",
+        open_ended=False,
     ),
     Scenario(
         id="high_count_pad",

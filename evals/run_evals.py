@@ -17,6 +17,7 @@ from dotenv import load_dotenv
 from evals.fixtures import SCENARIOS
 from evals.grounding import score
 from evals.judge import judge_suggestion, summarize
+import evals.makeable as makeable_mod
 from evals.mock_responses import MOCK_RESPONSES
 from recommender.llm import AnthropicClient, MockClient
 from recommender.recommender import recommend
@@ -41,6 +42,9 @@ def main() -> None:
 
     total = 0
     grounded = 0
+    mk_total = 0
+    mk_uses_inv = 0
+    mk_now = 0
     property_failures: list[str] = []
     all_verdicts = []
 
@@ -77,13 +81,23 @@ def main() -> None:
                 f"{sc.id}: grounding {report.rate:.0%} < expected {sc.expect_min_grounded_rate:.0%}"
             )
 
+        if sc.open_ended:
+            mk = makeable_mod.score(rec.suggestions, sc.inventory)
+            mk_total += mk.total
+            mk_uses_inv += mk.uses_inventory_count
+            mk_now += mk.makeable_now_count
+
         if args.live and args.judge:
             for s in rec.suggestions:
                 all_verdicts.append(judge_suggestion(s, sc.request, llm))
 
     rate = grounded / total if total else 0.0
+    mk_uses_rate = mk_uses_inv / mk_total if mk_total else 0.0
+    mk_now_rate = mk_now / mk_total if mk_total else 0.0
     print("-" * max(len(header), 70))
-    print(f"GROUNDING RATE: {grounded}/{total} = {rate:.0%}")
+    print(f"GROUNDING RATE:    {grounded}/{total} = {rate:.0%}")
+    print(f"MAKEABLE RATE:     {mk_uses_inv}/{mk_total} = {mk_uses_rate:.0%}  (open-ended suggestions)")
+    print(f"MAKEABLE-NOW RATE: {mk_now}/{mk_total} = {mk_now_rate:.0%}  (open-ended suggestions)")
 
     if all_verdicts:
         js = summarize(all_verdicts)
