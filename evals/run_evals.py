@@ -101,11 +101,16 @@ def main() -> None:
 
     if all_verdicts:
         js = summarize(all_verdicts)
+        name_acc = (
+            f"{js.name_accuracy_rate:.0%} ({js.name_accuracy_n}/{js.n})"
+            if js.name_accuracy_rate is not None else "n/a"
+        )
         print(
             f"JUDGE ({js.n} suggestions): "
             f"constraints respected {js.constraint_pass_rate:.0%}, "
             f"occasion fit {js.avg_occasion_fit:.1f}/5, "
-            f"recipe plausibility {js.avg_recipe_plausibility:.1f}/5"
+            f"recipe plausibility {js.avg_recipe_plausibility:.1f}/5, "
+            f"name accuracy {name_acc}"
         )
 
     if property_failures:

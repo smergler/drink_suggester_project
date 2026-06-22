@@ -85,3 +85,34 @@ def test_summary_aggregates():
     assert s.constraint_pass_rate == 0.5
     assert s.avg_occasion_fit == 3.0
     assert s.avg_recipe_plausibility == 4.0
+    assert s.name_accuracy_rate is None  # no verdicts included name_accurate
+
+
+def test_name_accurate_false_parses():
+    wrong_name = '{"constraints_respected": true, "occasion_fit": 4, "recipe_plausibility": 3, "name_accurate": false, "notes": "called Negroni but uses bourbon"}'
+    v = judge_suggestion(SUGG, REQ, SequenceClient(wrong_name))
+    assert v.name_accurate is False
+
+
+def test_summary_name_accuracy_rate():
+    s = summarize([
+        JudgeVerdict(constraints_respected=True, occasion_fit=5, recipe_plausibility=5, name_accurate=True),
+        JudgeVerdict(constraints_respected=True, occasion_fit=4, recipe_plausibility=3, name_accurate=False),
+    ])
+    assert s.name_accuracy_rate == 0.5
+    assert s.name_accuracy_n == 2
+
+
+def test_name_accurate_none_when_absent():
+    # Responses without name_accurate should parse with None (excluded from rate).
+    v = judge_suggestion(SUGG, REQ, SequenceClient(PASS))
+    assert v.name_accurate is None
+
+
+def test_summary_name_accuracy_rate_none_when_all_absent():
+    s = summarize([
+        JudgeVerdict(constraints_respected=True, occasion_fit=4, recipe_plausibility=5),
+        JudgeVerdict(constraints_respected=False, occasion_fit=2, recipe_plausibility=3),
+    ])
+    assert s.name_accuracy_rate is None
+    assert s.name_accuracy_n == 0

@@ -22,10 +22,14 @@ from recommender.schemas import RecommendRequest, Suggestion
 
 JUDGE_SYSTEM = """You are a meticulous cocktail judge. Given a drink suggestion and
 the user's request, score it. Be strict: if any stated constraint is violated,
-constraints_respected must be false.
+constraints_respected must be false. If the drink has a recognized classic name but
+its listed ingredients don't match that classic's canonical recipe (e.g. called a
+'Negroni' but contains bourbon instead of gin), set name_accurate to false. If the
+drink has an invented or creative name, set name_accurate to true unless the
+description explicitly claims it is a classic it clearly is not.
 
 Respond with ONLY this JSON, no prose:
-{"constraints_respected": true|false, "occasion_fit": 1-5, "recipe_plausibility": 1-5, "notes": "one sentence"}"""
+{"constraints_respected": true|false, "occasion_fit": 1-5, "recipe_plausibility": 1-5, "name_accurate": true|false, "notes": "one sentence"}"""
 
 
 class JudgeError(Exception):
@@ -36,6 +40,7 @@ class JudgeVerdict(BaseModel):
     constraints_respected: bool
     occasion_fit: int = Field(ge=1, le=5)
     recipe_plausibility: int = Field(ge=1, le=5)
+    name_accurate: bool | None = None  # None = judge omitted the field; excluded from name_accuracy_rate
     notes: str = ""
 
 
@@ -111,6 +116,18 @@ class JudgeSummary:
         if not self.verdicts:
             return 0.0
         return sum(v.recipe_plausibility for v in self.verdicts) / self.n
+
+    @property
+    def name_accuracy_rate(self) -> float | None:
+        """Fraction of verdicts where name_accurate is True. None if no verdict included the field."""
+        assessed = [v for v in self.verdicts if v.name_accurate is not None]
+        if not assessed:
+            return None
+        return sum(v.name_accurate for v in assessed) / len(assessed)
+
+    @property
+    def name_accuracy_n(self) -> int:
+        return sum(1 for v in self.verdicts if v.name_accurate is not None)
 
 
 def summarize(verdicts: list[JudgeVerdict]) -> JudgeSummary:

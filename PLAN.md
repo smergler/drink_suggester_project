@@ -43,16 +43,18 @@ makeable = "actually buildable from owned bottles." Closes the all-`missing` Mai
 - [ ] **1.6 Run live once**: `.venv/bin/python -m evals.run_evals --live`. Record grounding + makeable
       numbers in `RESUME_STORY.md` metrics table. Commit (see git note above).
 
-## Task 2 — Run the LLM judge live  ·  Status: not started
+## Task 2 — Run the LLM judge live  ·  Status: in progress
 
 Goal: produce the quality numbers grounding can't (built + unit-tested, never run live).
 
-- [ ] **2.1 Sanity-read `evals/run_evals.py`** `--judge` branch — confirm it calls `judge_suggestion`
+- [x] **2.1 Sanity-read `evals/run_evals.py`** `--judge` branch — confirm it calls `judge_suggestion`
       per suggestion with a live `AnthropicClient` and prints the `JudgeSummary` line.
-- [ ] **2.2 (Optional, recommended) add a `name_accurate` bool** to `JudgeVerdict` in `evals/judge.py`
+      _Confirmed: lines 80-85 collect verdicts per suggestion, summarize at end, prints JudgeSummary._
+- [x] **2.2 (Optional, recommended) add a `name_accurate` bool** to `JudgeVerdict` in `evals/judge.py`
       + one line in `JUDGE_SYSTEM` ("if the drink's name doesn't match its actual recipe, set false").
       Add a `JudgeSummary.name_accuracy_rate`. Add a unit test in `tests/test_judge.py`.
       **Verify:** `.venv/bin/python -m pytest -q` green. _(Catches "Boulevardier called a Negroni".)_
+      _Done; name_accurate=None when absent (excluded from rate to avoid inflation); prompt clarified for invented names; name_accuracy_n denominator exposed; 34 tests green._
 - [ ] **2.3 Run** `.venv/bin/python -m evals.run_evals --live --judge`. Capture constraint pass rate,
       occasion fit, plausibility (and name accuracy if 2.2 done).
 - [ ] **2.4 Record** the judge numbers in `RESUME_STORY.md`; commit.
