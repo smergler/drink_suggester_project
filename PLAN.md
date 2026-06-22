@@ -212,7 +212,8 @@ Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supa
 - [x] **P6.4 Auth dependency:** FastAPI `get_current_user` that verifies the Supabase JWT locally against the
       JWT secret and returns `user_id`; 401 on invalid. Unit-test with a signed test token.
       _backend/auth.py; 7 tests (valid, expired, wrong secret, wrong audience, service_role bypass, missing env var 503, missing sub); 41 tests green._
-- [ ] **P6.5 Data layer via `supabase-py` carrying the user JWT** (NOT asyncpg — per ADR). One thin module.
+- [x] **P6.5 Data layer via `supabase-py` carrying the user JWT** (NOT asyncpg — per ADR). One thin module.
+      _backend/db.py; DB class; new client per request (thread-safe); postgrest.auth(user_jwt) so RLS fires; covers all 6 tables + 2 RPCs; 41 tests green._
 - [ ] **P6.6 Inventory endpoints** (GET/POST/PUT/DELETE, soft-delete via `is_active`). Tests: auth required, 404/403.
 - [ ] **P6.7 Companions endpoints** + feedback (implement the verdict→like/dislike rule from the spec). Tests.
 - [ ] **P6.8 Sessions + session_drinks endpoints**; implement "current session" per the spec. Tests.
