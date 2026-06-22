@@ -27,6 +27,7 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Run the recommendation eval.")
     parser.add_argument("--live", action="store_true", help="call the real Claude model")
     parser.add_argument("--judge", action="store_true", help="also run the LLM-as-judge (live only)")
+    parser.add_argument("--strict", action="store_true", help="exit non-zero if any property assertion fails (for CI)")
     args = parser.parse_args()
 
     if args.live:
@@ -117,6 +118,8 @@ def main() -> None:
         print(f"\nPROPERTY FAILURES ({len(property_failures)}):")
         for f in property_failures:
             print(f"  ✗ {f}")
+        if args.strict:
+            raise SystemExit(1)
     else:
         print("\nAll property assertions passed.")
 

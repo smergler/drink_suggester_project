@@ -96,17 +96,18 @@ Goal: a clickable demo. Keep it minimal — no DB, no auth, hardcoded inventory 
 - [x] **4.5 Setup/run section**: venv, install, pytest, run_evals (mock + live). _"Run the app" section added after Task 3._
 - [ ] **4.6 Live demo link** + a screenshot. Commit. _(blocked on 3.6/3.7 human steps)_
 
-## Task 5 — CI gate on the evals  ·  Status: not started
+## Task 5 — CI gate on the evals  ·  Status: in progress
 
-- [ ] **5.1 Create `.github/workflows/ci.yml`**: trigger on push/PR; Python 3.14; `pip install -r requirements.txt`.
-- [ ] **5.2 Run `pytest -q`** as a required step.
-- [ ] **5.3 Run `python -m evals.run_evals`** (mock mode — no API key in CI). The runner already prints
-      `PROPERTY FAILURES` and exits 0; **add a `--strict` flag** to `run_evals.py` that exits non-zero if any
-      property assertion fails, and use it in CI so a regression fails the build.
-- [ ] **5.4 🧑 (Optional) nightly live eval**: a model can write the workflow YAML, but adding the
-      `ANTHROPIC_API_KEY` **repo secret** is a human step in GitHub settings. `schedule:` cron, runs
-      `--live`; never on PRs (keeps tokens/secrets off forks).
-- [ ] **5.5 Add a CI status badge** to `README.md`. Commit.
+- [x] **5.1 Create `.github/workflows/ci.yml`**: trigger on push/PR; Python 3.12; `pip install -r requirements.txt`.
+      _Created at .github/workflows/ci.yml._
+- [x] **5.2 Run `pytest -q`** as a required step.
+      _Included in ci.yml._
+- [x] **5.3 Run `python -m evals.run_evals`** (mock mode — no API key in CI). **Added `--strict` flag**
+      that exits non-zero if any property assertion fails; used in CI.
+      _`--strict` added to run_evals.py; exits 0 when all pass, 1 on failures._
+- [ ] **5.4 🧑 (Optional) nightly live eval**: workflow YAML written below; adding `ANTHROPIC_API_KEY`
+      **repo secret** is a human step in GitHub settings.
+- [ ] **5.5 Add a CI status badge** to `README.md`. Commit. _(blocked on repo having CI run first)_
 
 ---
 
