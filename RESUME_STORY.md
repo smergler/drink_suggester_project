@@ -94,6 +94,30 @@ I added a makeable-rate metric and an LLM judge to cover the axes grounding can'
 - "The eval caught the model over-assuming pantry items; I tightened the grounding
   definition and the rate moved from X to Y."
 
+## Product framing — why a portfolio piece, not a business (yet)
+
+The original idea was a consumer product: "Untappd / Vivino for cocktails" — log the
+drinks you've tried and liked, get recommendations; the bartender's "I just know what
+you'll want" trick as an app. It was stress-tested and **deliberately shelved as a
+business** for now, for reasons worth being able to articulate:
+
+- **Proven model, but the value isn't the recommender.** Untappd (beer) and Vivino
+  (wine) prove the log→recommend model works — but they won on *frictionless logging +
+  social/gamification*, not on recommendation quality. The recommender (the fun part) is
+  the least important ~20%.
+- **Cold-start / logging-friction trap.** The "I'm indecisive at a bar, surprise me"
+  moment is exactly when the user has logged nothing and won't stop to journal. The value
+  arrives only after work the user won't do.
+- **Two different products.** Bar-goer (social discovery, Untappd-shaped) vs. home
+  mixologist (inventory-based, Mixel-shaped) are different apps; building both finishes neither.
+- **Cheapest test first.** The right validation is a Wizard-of-Oz run — ~10 people text
+  their 5 favorite drinks, you reply with a recommendation, and you measure *unprompted
+  second requests* — not building the app.
+
+**Decision:** shelve the business question and build this as an **AI/ML portfolio piece**,
+which is why it's scoped AI-deep (eval-first) rather than full-stack breadth. If the
+business is ever revisited, the Wizard-of-Oz test above is the starting point — not more code.
+
 ## Open decisions / next steps
 
 - [x] **Pantry boundary:** decided — honey/cinnamon stay as legitimate "grab these"
