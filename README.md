@@ -80,6 +80,27 @@ ANTHROPIC_API_KEY=sk-ant-...
 .venv/bin/python -m evals.inspect <scenario_id>...  # print actual suggestions for a scenario
 ```
 
+## Cost
+
+Runs on **Claude Haiku 4.5** ($1.00 / 1M input tokens, $5.00 / 1M output tokens).
+
+Per recommendation request: ~600 input tokens (system prompt + ~20-bottle inventory +
+request) and ~800 output tokens (3 structured drinks) → **≈ $0.0046**, under half a cent.
+
+| Personal usage | Requests/mo | Est. cost/mo |
+|---|---|---|
+| Light (3/day) | ~90 | ~$0.40 |
+| Moderate (8/day) | ~240 | ~$1.10 |
+| Heavy (15/day) | ~450 | ~$2.10 |
+
+A full offline eval run is **free** (mock responses). A full `--live --judge` run is
+~30 calls ≈ **under $0.20**. Swapping to Opus 4.8 ($5/$25 per 1M) is ~5× across the board —
+heavy personal use still ~$10/mo.
+
+**Takeaway:** at personal scale the API cost is a rounding error, so the project optimizes
+for *recommendation quality* (grounding / makeable / judge scores), not token cost. Cost
+would only become a design factor at thousands-of-users scale.
+
 ## Status
 
 Recommender core + grounding eval + LLM judge are implemented and tested (offline and
