@@ -48,9 +48,9 @@ class CompanionProfile(BaseModel):
 
 
 class RecommendRequest(BaseModel):
-    occasion: str
-    mood: str | None = None
-    count: int = 3
+    occasion: str = Field(..., max_length=200)
+    mood: str | None = Field(None, max_length=200)
+    count: int = Field(3, ge=1, le=10)
     constraints: list[str] = Field(default_factory=list)
     companions: list[CompanionProfile] = Field(default_factory=list)
     # Fresh ingredients the user confirms they have on hand right now.
