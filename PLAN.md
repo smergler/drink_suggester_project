@@ -197,11 +197,12 @@ Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
 
 ### P6 — The real backend (breadth)  ·  Status: not started
 Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supabase client + user JWT, NO asyncpg.**
-- [ ] **P6.0 Write `docs/backend-spec.md`** — the authoritative backend spec. Must cover: data model
+- [x] **P6.0 Write `docs/backend-spec.md`** — the authoritative backend spec. Must cover: data model
       (inventory, companions, sessions, session_drinks), endpoint surface, and explicitly resolve each of these
       known pitfalls: the **error-body contract** (match FastAPI's `{detail}` or add handlers), **pagination**
       (`limit`/`offset` everywhere or nowhere — pick one), a **unique key** for upsert/dedup (e.g. `UNIQUE(user_id, name)`),
       the **companion-feedback verdict→like/dislike rule**, and a concrete definition of **"current session"**.
+      _Written + reviewed + revised. Key fixes: RPC for atomic preference reversal (ON CONFLICT DO UPDATE); partial unique index for one-open-session-per-user; /sessions/active not /sessions/current (routing conflict); cross-user companion guard documented; PUT /companions/{id} added; GET /sessions/{id} added; trigger statements completed._
 - [ ] **P6.1 🧑 Create the Supabase project**; collect URL, anon key, service key, JWT secret (human).
 - [ ] **P6.2 Write `backend/migrations/001_init.sql`** from the spec: tables + `UNIQUE(user_id, name)` where
       needed + RLS policies (`auth.uid() = user_id`) + `updated_at` trigger.
