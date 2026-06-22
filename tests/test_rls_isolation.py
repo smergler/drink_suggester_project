@@ -19,6 +19,9 @@ from __future__ import annotations
 
 import os
 import pytest
+from dotenv import load_dotenv
+
+load_dotenv()  # must run before the skipif condition is evaluated
 
 _REQUIRED = [
     "TEST_USER_A_EMAIL", "TEST_USER_A_PASSWORD",

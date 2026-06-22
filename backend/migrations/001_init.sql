@@ -167,3 +167,20 @@ BEGIN
   ON CONFLICT (companion_id, value) DO UPDATE SET type = 'dislike';
 END;
 $$;
+
+-- ============================================================
+-- GRANTS
+-- ============================================================
+-- RLS restricts which rows each user can see/modify.
+-- These GRANTs are the prerequisite: authenticated users must have
+-- table-level privileges before RLS policies are even evaluated.
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.bottles               TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.companions            TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.companion_preferences TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.sessions              TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.session_companions    TO authenticated;
+GRANT SELECT, INSERT, UPDATE, DELETE ON public.session_drinks        TO authenticated;
+
+GRANT EXECUTE ON FUNCTION upsert_companion_like(uuid, text)    TO authenticated;
+GRANT EXECUTE ON FUNCTION upsert_companion_dislike(uuid, text) TO authenticated;
