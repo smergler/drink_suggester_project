@@ -129,4 +129,63 @@ MOCK_RESPONSES: dict[str, str] = {
    "steps":["Stir","Strain"],
    "why":"Hallucinates vermouth as pantry to hit count=3."}
 ]}""",
+
+    # VIOLATION: "Gin" faked as inventory (not owned).
+    "negroni_no_gin": """
+{"suggestions":[
+  {"name":"Negroni","description":"Classic bitter aperitivo.",
+   "ingredients":[
+     {"name":"Gin","quantity":"1 oz","source":"inventory"},
+     {"name":"Campari","quantity":"1 oz","source":"inventory"},
+     {"name":"Carpano Antica Sweet Vermouth","quantity":"1 oz","source":"inventory"},
+     {"name":"orange peel","quantity":"1","source":"perishable"}],
+   "steps":["Stir with ice","Strain over a large cube"],
+   "why":"Mock fakes gin as owned."}
+]}""",
+
+    # VIOLATION: Peychaud's + absinthe faked as inventory.
+    "sazerac_no_peychauds": """
+{"suggestions":[
+  {"name":"Sazerac","description":"New Orleans classic.",
+   "ingredients":[
+     {"name":"Rittenhouse Rye","quantity":"2 oz","source":"inventory"},
+     {"name":"Peychaud's Bitters","quantity":"3 dashes","source":"inventory"},
+     {"name":"Absinthe","quantity":"rinse","source":"inventory"},
+     {"name":"sugar","quantity":"1 cube","source":"pantry"}],
+   "steps":["Rinse with absinthe","Stir rye, sugar, bitters","Strain"],
+   "why":"Mock fakes Peychaud's and absinthe as owned."}
+]}""",
+
+    # VIOLATION: rum + curacao faked as inventory, orgeat faked as pantry.
+    "mai_tai_bourbon_only": """
+{"suggestions":[
+  {"name":"Mai Tai","description":"Tiki classic.",
+   "ingredients":[
+     {"name":"Aged Rum","quantity":"2 oz","source":"inventory"},
+     {"name":"Orange Curacao","quantity":"0.5 oz","source":"inventory"},
+     {"name":"Orgeat","quantity":"0.5 oz","source":"pantry"},
+     {"name":"lime juice","quantity":"1 oz","source":"perishable"}],
+   "steps":["Shake with crushed ice"],
+   "why":"Mock fakes rum/curacao as owned and orgeat as pantry."}
+]}""",
+
+    # Drinks 1-3 grounded; drinks 4-5 pad with faked bottles.
+    "high_count_pad": """
+{"suggestions":[
+  {"name":"Bourbon Old Fashioned","description":"Honest.",
+   "ingredients":[{"name":"Four Roses Small Batch","quantity":"2 oz","source":"inventory"},{"name":"sugar","quantity":"1 tsp","source":"pantry"},{"name":"Angostura Bitters","quantity":"2 dashes","source":"missing"}],
+   "steps":["Stir"],"why":"Honest."},
+  {"name":"Rye, neat","description":"Honest.",
+   "ingredients":[{"name":"Rittenhouse Rye","quantity":"2 oz","source":"inventory"}],
+   "steps":["Pour"],"why":"Honest."},
+  {"name":"Mezcal, neat","description":"Honest.",
+   "ingredients":[{"name":"Del Maguey Vida Mezcal","quantity":"2 oz","source":"inventory"}],
+   "steps":["Pour"],"why":"Honest."},
+  {"name":"Gin Martini","description":"Padding with faked bottles.",
+   "ingredients":[{"name":"Gin","quantity":"2.5 oz","source":"inventory"},{"name":"Dry Vermouth","quantity":"0.5 oz","source":"inventory"}],
+   "steps":["Stir"],"why":"Fakes gin and dry vermouth as owned."},
+  {"name":"Daiquiri","description":"Padding with faked rum.",
+   "ingredients":[{"name":"White Rum","quantity":"2 oz","source":"inventory"},{"name":"lime juice","quantity":"0.75 oz","source":"perishable"},{"name":"simple syrup","quantity":"0.5 oz","source":"pantry"}],
+   "steps":["Shake"],"why":"Fakes rum as owned."}
+]}""",
 }

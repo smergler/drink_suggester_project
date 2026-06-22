@@ -20,7 +20,7 @@ deterministic **eval harness** that measures and protects recommendation quality
 | Mock baseline (offline, seeded-violation stubs) | **64%** | Proved the scorer catches hallucinated ownership before spending a token. |
 | **Live baseline** (claude-haiku-4-5) | **91%** | 10/11 grounded. The 1 failure: model labeled honey/cinnamon as `pantry` (over-assumed on-hand). |
 | After tightening the pantry definition in the system prompt | **100%** | Model now flags honey/spices as `perishable` ("grab these") instead of assuming them. Real before/after. |
-| (next) add adversarial scenarios | _TBD, by design < 100%_ | 100% on easy cases is **not** a credible gate. Adding harder cases to give the metric teeth — a metric that always passes proves nothing. |
+| Live + 4 adversarial classics (Negroni w/o gin, Sazerac w/o Peychaud's, Mai Tai w/ bourbon only, count=5 from 3 bottles) | **100% grounded** | Model **flags, doesn't fake** — substitutes or marks `missing`, never claims an unowned bottle. But see below: grounding ≠ makeable. |
 
 ## Engineering decisions worth talking about (the "why" matters more than the "what")
 
@@ -60,6 +60,28 @@ This is the cleanest interview anecdote: the eval caught a real over-assumption,
 tightened the definition, and the metric moved — concrete evidence I treat LLM
 output as something to be measured and engineered, not trusted.
 
+## What inspecting the outputs revealed (grounding ≠ makeable)
+
+Reading the actual live suggestions — not just the score — surfaced two things the
+grounding metric structurally cannot see. (Also a matcher bug: "Peychaud's Bitters"
+was matching an owned "Angostura Bitters" on the shared word "bitters" — fixed by
+treating generic category nouns as non-matching tokens.)
+
+- **Grounding can be satisfied by a useless drink.** Asked for a Mai Tai with only
+  bourbon owned, the model returned a Mai Tai that honestly flagged rum/orgeat/curaçao
+  as `missing` — **100% grounded, but it uses zero owned bottles.** Honest ≠ makeable.
+  → Motivates a second deterministic metric: a **makeable rate** (an open-ended
+  recommendation should be anchored in ≥1 owned bottle, not a pure shopping list).
+- **Grounding can't judge correctness.** Asked for a Negroni without gin, it returned
+  bourbon + Campari + sweet vermouth (a smart substitution — but that's a *Boulevardier*)
+  and still **called it a "Negroni."** Grounded, but the name is wrong. → LLM-judge territory.
+
+Strong signal alongside these: asked for 5 drinks from a 3-bottle bar, it returned five
+distinct drinks each anchored on an owned spirit, no invented bottles.
+
+**The takeaway line:** "grounding measures honesty about ownership, not usefulness — so
+I added a makeable-rate metric and an LLM judge to cover the axes grounding can't."
+
 ## Interview-ready sentences
 
 - "I tracked *grounding rate* as my primary metric — the percent of recommendations
@@ -77,10 +99,13 @@ output as something to be measured and engineered, not trusted.
 - [x] **Pantry boundary:** decided — honey/cinnamon stay as legitimate "grab these"
   flags (kept the metric honest). Fixed via system-prompt tightening, not by widening
   the allowlist. Also fixed the hot-water normalization bug in the scorer.
-- [ ] **Add adversarial scenarios the live model actually trips on — now top priority.**
-  Live grounding hit 100% on the current set, which means the eval is too easy to be a
-  credible quality gate. Need cases targeting known LLM grounding failure modes (e.g.
-  asking for a named classic whose base spirit the user doesn't own, to see if the
-  model fakes it as `inventory` vs. substitutes vs. flags `missing`).
+- [x] **Adversarial scenarios added** (Negroni/Sazerac/Mai Tai/count=5). Live grounding
+  stayed 100% — the model flags rather than fakes. Also fixed a matcher false-positive
+  (generic "bitters"/"vermouth"/etc. no longer carry a match alone).
+- [ ] **Add a `makeable rate` metric — now top priority.** Deterministic, complements
+  grounding: an open-ended recommendation must use ≥1 owned bottle (the Mai Tai gamed
+  grounding by being all-`missing`). Grounding = honesty; makeable = usefulness.
+- [ ] **Run the LLM judge live** (constraint adherence, occasion fit, plausibility,
+  name accuracy — would catch "Boulevardier called a Negroni"). Built + unit-tested, never run live.
 - [ ] Wrap the core in a minimal FastAPI + one-screen frontend, deploy (live URL).
 - [ ] README with an architecture diagram + the two "why I decided X" writeups.

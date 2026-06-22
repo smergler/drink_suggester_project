@@ -15,8 +15,16 @@ def _tokens(s: str) -> set[str]:
     return set(normalize(s).split())
 
 
-# Tokens too generic to carry matching weight on their own.
-_STOPWORDS = {"the", "of", "and", "small", "batch", "bottle"}
+# Tokens too generic to carry a match on their own. Generic category nouns are
+# included so "Peychaud's Bitters" does NOT match an owned "Angostura Bitters"
+# on the shared word "bitters" — the brand/qualifier token must overlap instead.
+# (Subcategory words like bourbon/rye/mezcal are intentionally NOT here, so a
+# recipe calling for generic "rye" still matches an owned "Rittenhouse Rye".)
+_STOPWORDS = {
+    "the", "of", "and", "small", "batch", "bottle",
+    "bitters", "vermouth", "liqueur", "syrup",
+    "rum", "gin", "vodka", "whiskey", "whisky", "tequila", "brandy", "cognac",
+}
 
 
 def match_bottle(ingredient_name: str, inventory: list[Bottle]) -> Bottle | None:

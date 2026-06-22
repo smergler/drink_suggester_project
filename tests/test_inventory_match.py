@@ -34,6 +34,15 @@ def test_unowned_spirits_do_not_match():
     assert match_bottle("Aperol", INV) is None
 
 
+def test_generic_category_word_alone_does_not_match():
+    # owning Angostura Bitters must NOT make Peychaud's Bitters look owned
+    inv = INV + [Bottle(id="7", name="Angostura Bitters", category="bitters")]
+    assert match_bottle("Peychaud's Bitters", inv) is None
+    assert match_bottle("Angostura Bitters", inv).name == "Angostura Bitters"
+    # but the qualifier still carries sweet/dry vermouth to the owned bottle
+    assert match_bottle("sweet vermouth", inv).name == "Carpano Antica Sweet Vermouth"
+
+
 def test_empty_and_stopword_only_names():
     assert match_bottle("", INV) is None
     assert match_bottle("the of and", INV) is None

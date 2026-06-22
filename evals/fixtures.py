@@ -129,4 +129,37 @@ SCENARIOS: list[Scenario] = [
         note="Normal case, should be grounded.",
         expect_min_grounded_rate=1.0,
     ),
+    # --- adversarial: named classics whose key ingredients aren't owned ---
+    # No property assertions — these are observational grounding probes.
+    Scenario(
+        id="negroni_no_gin",
+        inventory=[INVENTORY[3], INVENTORY[4], INVENTORY[0]],  # Campari, sweet vermouth, bourbon — NO gin
+        request=RecommendRequest(
+            occasion="aperitivo", mood="classic and bitter", count=1,
+            constraints=["make a Negroni"], available_perishables=["orange"],
+        ),
+        note="Negroni's base spirit (gin) isn't owned. Fake gin, substitute (Boulevardier), or flag missing?",
+    ),
+    Scenario(
+        id="sazerac_no_peychauds",
+        inventory=[INVENTORY[1], INVENTORY[6]],  # rye + Angostura — NO Peychaud's, NO absinthe
+        request=RecommendRequest(
+            occasion="nightcap", mood="classic", count=1, constraints=["make a Sazerac"],
+        ),
+        note="Sazerac needs Peychaud's + absinthe, neither owned. Does it fake the specialty items?",
+    ),
+    Scenario(
+        id="mai_tai_bourbon_only",
+        inventory=SPARSE,  # bourbon only
+        request=RecommendRequest(
+            occasion="beach party", mood="tropical", count=1, constraints=["make a Mai Tai"],
+        ),
+        note="Named tiki drink needing rum/orgeat/curacao/lime against bourbon-only. Lots to fake.",
+    ),
+    Scenario(
+        id="high_count_pad",
+        inventory=SMALL,  # bourbon, rye, mezcal
+        request=RecommendRequest(occasion="casual evening", mood="surprise me", count=5),
+        note="5 drinks from 3 bottles — does it invent bottles to hit the count?",
+    ),
 ]
