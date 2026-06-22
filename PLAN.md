@@ -110,21 +110,95 @@ Goal: a clickable demo. Keep it minimal — no DB, no auth, hardcoded inventory 
 
 ---
 
-## Phase 2 — after the 5 (not yet broken into subtasks)
+## Phase 2 — after the 5 (ordered by AI/ML-resume signal)
 
-Ordered by AI/ML-resume signal. Break each into subtasks before starting it.
+Same rules as Phase 1: atomic subtasks, exact files, a Verify step, commit at each green step.
 
-- [ ] **P1 · Multi-model sweep.** Run the eval across Haiku / Sonnet / Opus; compare grounding,
-      makeable, judge scores **and** cost/latency. Deliverable: a results table + a "why I chose X" note.
-      _(Highest signal-per-hour: "I benchmarked 3 models on my own eval and chose X.")_
-- [ ] **P2 · Judge calibration.** Hand-label ~15 outputs; measure whether the LLM judge agrees.
-      Shows you don't blindly trust an LLM judge. Deliverable: agreement rate + disagreement notes.
-- [ ] **P3 · Retrieval / RAG.** Embed a corpus of real cocktail recipes; retrieve similar drinks to
-      ground/inspire suggestions beyond parametric memory. Add a retrieval-quality metric. _(Biggest capability jump.)_
-- [ ] **P4 · Structured outputs via the API.** Replace "ask for JSON + parse + retry" with
-      `output_config.format` (Haiku 4.5 supports it) for schema-guaranteed output. Reliability upgrade.
-- [ ] **P5 · Observability / tracing.** Log every LLM call (tokens, latency, cost, grounding result) to a
-      simple store; optional tiny dashboard. "I instrumented my LLM calls" = production-AI signal.
-- [ ] **P6 · The real backend (breadth).** Auth + DB + RLS + persistence (inventory/companions/sessions).
-      **This is where `docs/adr-001-data-isolation.md` and the prompt-review findings get used.** Turns the
-      demo into a multi-user app. Before building, externalize the prompt-review findings (still only in chat).
+### P1 — Multi-model sweep  ·  Status: not started
+Goal: benchmark Haiku/Sonnet/Opus on the eval and choose one, with cost/latency in the picture.
+- [ ] **P1.1 Parameterize the model.** In `recommender/llm.py`, add a `model` arg to `AnthropicClient.__init__`
+      (default the current Haiku id). In `evals/run_evals.py` add `--model <id>` and pass it through.
+      **Verify:** `--live --model claude-haiku-4-5` still runs.
+- [ ] **P1.2 Capture usage.** Have `AnthropicClient` record `input_tokens`/`output_tokens` per call
+      (read `msg.usage`) onto a public counter on the instance. Add a price table
+      `{model: (in_per_mtok, out_per_mtok)}` in `evals/sweep.py` (Haiku 1/5, Sonnet 4.6 3/15, Opus 4.8 5/25).
+- [ ] **P1.3 Create `evals/sweep.py`.** For each model in a list, run all scenarios (grounding + makeable +
+      judge), accumulate tokens + wall-clock, print one row per model: grounding%, makeable%, judge avgs,
+      total tokens, est cost, total seconds.
+- [ ] **P1.4 🧑 Run the sweep live** (3× token cost across 3 models — still cents). `.venv/bin/python -m evals.sweep`.
+- [ ] **P1.5 Record** the comparison table + a one-paragraph "why I chose X" in `RESUME_STORY.md`; commit.
+- [ ] **P1.6 Set the chosen model** as the default in `AnthropicClient` (or via env); note the decision. Commit.
+
+### P2 — Judge calibration  ·  Status: not started
+Goal: check whether the LLM judge agrees with a human — don't trust a judge you haven't validated.
+- [ ] **P2.1 🧑 Build a labeled set.** Create `evals/judge_labels.json`: ~15 `{scenario_id, suggestion_name,
+      constraints_respected, occasion_fit, recipe_plausibility}` rows labeled **by the user** from real outputs
+      (use `python -m evals.inspect` to see them).
+- [ ] **P2.2 Create `evals/calibrate_judge.py`.** Re-run the judge on those same outputs; compute agreement:
+      exact-match rate for the boolean, mean-absolute-error for the 1–5 scores. Print per-dimension agreement.
+- [ ] **P2.3 Run it** (`--live`); record agreement + the cases where judge and human disagree.
+- [ ] **P2.4 If agreement is weak**, revise `JUDGE_SYSTEM` in `evals/judge.py`, re-run, track the delta.
+      **Verify:** `pytest -q` still green.
+- [ ] **P2.5 Record** agreement numbers + the "I validated my judge against human labels" note in `RESUME_STORY`; commit.
+
+### P3 — Retrieval / RAG  ·  Status: not started
+Goal: ground/inspire suggestions in a corpus of real recipes, with a retrieval-quality metric.
+- [ ] **P3.1 Decide the stack** (write the choice in a comment): local `sentence-transformers` embeddings +
+      numpy cosine (no extra API key) vs. Voyage AI embeddings (Anthropic-recommended, needs a key). Default to local.
+- [ ] **P3.2 🧑 Source the corpus.** Create `data/cocktails.json` — ~150–300 classic recipes
+      `{name, ingredients[], instructions, tags[]}`. May need a human to pick/clean a public dataset.
+- [ ] **P3.3 Create `retrieval/index.py`.** Embed each recipe (name+ingredients+tags) once; cache vectors to
+      `data/cocktails.vectors.npy`. **Verify:** running it twice doesn't re-embed (cache hit).
+- [ ] **P3.4 Create `retrieval/search.py`.** `search(query: str, k=5) -> list[Recipe]` via cosine similarity.
+      Add a unit test in `tests/test_retrieval.py` (a "smoky agave" query returns mezcal/tequila drinks).
+- [ ] **P3.5 Wire into the recommender** behind a `use_retrieval: bool` flag: retrieve top-k for the
+      occasion/mood/inventory and add them to the context as inspiration (still grounded to owned bottles).
+- [ ] **P3.6 Add a retrieval-quality metric.** Small labeled query→expected-recipe set; compute recall@k.
+      Add to `evals/` and to `run_evals` output.
+- [ ] **P3.7 Run eval with/without retrieval**; compare grounding/makeable/judge + recall@k; record; commit.
+
+### P4 — Structured outputs via the API  ·  Status: not started
+Goal: replace "ask for JSON + parse + retry" with schema-guaranteed output (Haiku 4.5 supports it).
+- [ ] **P4.1 Read the structured-outputs section** of the `claude-api` skill (`output_config.format` /
+      `messages.parse`); confirm the exact Python call shape before coding.
+- [ ] **P4.2 Generate the schema** from the `Recommendation` pydantic model (`model_json_schema()`); strip
+      unsupported constraints (min/max, etc.) per the skill's limitations list.
+- [ ] **P4.3 Add a structured path** to `AnthropicClient` (e.g. `generate_structured(...)`) using
+      `messages.parse(..., output_format=Recommendation)` or `output_config={"format": {...}}`.
+- [ ] **P4.4 Switch `recommender.recommend`** to the structured path; keep the JSON-fence parse only as a fallback.
+- [ ] **P4.5 Track parse-failure rate** before/after (should drop to ~0). Add a unit test that the structured
+      path returns a valid `Recommendation`. **Verify:** `pytest -q` green; `--live` grounding/makeable unchanged.
+- [ ] **P4.6 Record** "moved to schema-guaranteed output, parse failures → 0" in `RESUME_STORY`; commit.
+
+### P5 — Observability / tracing  ·  Status: not started
+Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
+- [ ] **P5.1 Define a trace record** (dataclass): `ts, model, scenario_id, input_tokens, output_tokens,
+      latency_ms, grounded, makeable`.
+- [ ] **P5.2 Add a tracing hook.** In `run_evals` (or a wrapper around the client), write one JSONL line per
+      call to `traces/eval-<timestamp>.jsonl`. Gitignore `traces/`.
+- [ ] **P5.3 Create `evals/trace_summary.py`.** Read a JSONL file; print aggregates (calls, total/avg tokens,
+      avg/p95 latency, est cost, grounding/makeable rates). **Verify:** runs on a sample trace.
+- [ ] **P5.4 (optional) tiny dashboard:** a static `traces/view.html` that loads the JSONL and renders a table. Skippable.
+- [ ] **P5.5 Record** a sample summary in `RESUME_STORY`; commit.
+
+### P6 — The real backend (breadth)  ·  Status: not started
+Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supabase client + user JWT, NO asyncpg.**
+- [ ] **P6.0 Write `docs/backend-spec.md`** (replaces the deleted prompts, with their bugs fixed): data model
+      (inventory, companions, sessions, session_drinks), endpoint surface, the **error-body contract** (match
+      FastAPI's `{detail}` or add handlers), pagination (`limit`/`offset` everywhere or nowhere — pick one),
+      the **companion-feedback verdict→like/dislike rule**, and a concrete definition of "current session".
+- [ ] **P6.1 🧑 Create the Supabase project**; collect URL, anon key, service key, JWT secret (human).
+- [ ] **P6.2 Write `backend/migrations/001_init.sql`** from the spec: tables + `UNIQUE(user_id, name)` where
+      needed + RLS policies (`auth.uid() = user_id`) + `updated_at` trigger.
+- [ ] **P6.3 🧑 Apply the migration** in the Supabase SQL editor (human).
+- [ ] **P6.4 Auth dependency:** FastAPI `get_current_user` that verifies the Supabase JWT locally against the
+      JWT secret and returns `user_id`; 401 on invalid. Unit-test with a signed test token.
+- [ ] **P6.5 Data layer via `supabase-py` carrying the user JWT** (NOT asyncpg — per ADR). One thin module.
+- [ ] **P6.6 Inventory endpoints** (GET/POST/PUT/DELETE, soft-delete via `is_active`). Tests: auth required, 404/403.
+- [ ] **P6.7 Companions endpoints** + feedback (implement the verdict→like/dislike rule from the spec). Tests.
+- [ ] **P6.8 Sessions + session_drinks endpoints**; implement "current session" per the spec. Tests.
+- [ ] **P6.9 Point `/recommend` at the user's real inventory** (replace the hardcoded fixture from Task 3).
+- [ ] **P6.10 Frontend:** login, inventory manage, companions, sessions, recommend screen (extend Task 3's page).
+- [ ] **P6.11 RLS isolation test:** two users; confirm user A cannot read/write user B's rows.
+- [ ] **P6.12 🧑 Deploy** (Railway backend + Supabase + Vercel/static frontend); set all secrets (human).
+- [ ] **P6.13 Update** `README.md` + `RESUME_STORY.md`; commit.

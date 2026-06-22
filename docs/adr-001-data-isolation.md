@@ -6,9 +6,9 @@
 ## Context
 
 The app is multi-tenant: each user owns their inventory, companions, and session
-history. The original prompts specify Supabase Auth (JWT) + a Supabase Postgres DB,
-with **Row Level Security (RLS) policies** (prompt 02) restricting every table to
-`auth.uid() = user_id`. Prompt 03 separately says to access the DB with **raw asyncpg**.
+history. An earlier draft spec called for Supabase Auth (JWT) + a Supabase Postgres DB
+with **Row Level Security (RLS) policies** restricting every table to
+`auth.uid() = user_id` — while *also* specifying database access via **raw asyncpg**.
 
 ## Problem
 
@@ -19,7 +19,7 @@ Supabase API (PostgREST). A raw **asyncpg** connection talks straight to Postgre
 the connection-string role — effectively the service/owner role — with **no JWT and
 no `auth.uid()`**. Owner/service roles **bypass RLS entirely**.
 
-So if we use asyncpg, every RLS policy in prompt 02 becomes **dead code**. The only
+So if we use asyncpg, every RLS policy becomes **dead code**. The only
 thing protecting user A's data from user B is the application remembering to add
 `WHERE user_id = $1` to every single query, forever. One forgotten filter on one
 endpoint = a full cross-user data leak, with no second line of defense. It's a vault
