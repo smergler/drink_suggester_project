@@ -212,5 +212,5 @@ and relevant error paths (404, 409, 422).
   request returned a Boulevardier (correct) and a "Negroni" made with mezcal + dry vermouth
   (neither gin nor sweet vermouth — not a Negroni by any definition). Grounding: 100%. Name: wrong.
   This is the clearest next improvement target and a live demo of exactly why the judge exists.
-- [x] **Railway deploy** complete. Live URL: https://drinksuggesterproject-production.up.railway.app
+- [x] **Railway deploy** complete. Live URL: https://barback-production.up.railway.app
   (`railway.toml` start command + ANTHROPIC_API_KEY set in Railway dashboard).

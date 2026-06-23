@@ -1,6 +1,6 @@
 # BarBack
 
-[![CI](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml/badge.svg)](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml)
+[![CI](https://github.com/smergler/barback/actions/workflows/ci.yml/badge.svg)](https://github.com/smergler/barback/actions/workflows/ci.yml)
 
 An LLM cocktail recommender **grounded in the user's actual bottle inventory**, built
 eval-first: the centerpiece is a measurement harness that proves the recommendations only
@@ -164,4 +164,4 @@ would only become a design factor at thousands-of-users scale.
 - 88 passing unit tests (3 live RLS isolation tests skip without test credentials)
 - CI gate: pytest + offline eval `--strict` on every push
 
-**Live demo:** https://drinksuggesterproject-production.up.railway.app _(needs redeploy after P6 changes)_
+**Live demo:** https://barback-production.up.railway.app
