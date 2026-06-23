@@ -134,6 +134,19 @@
       <input id="bottle-cat" type="text" placeholder="Category (e.g. bourbon)" style="max-width:160px" />
       <button class="btn btn-sm" id="add-bottle-btn">Add</button>
     </div>
+    <details style="margin-bottom:.75rem">
+      <summary style="cursor:pointer;font-size:.85rem;color:#aaa;user-select:none">Bulk add…</summary>
+      <div style="margin-top:.6rem;display:grid;gap:.5rem">
+        <p style="font-size:.8rem;color:#888">One bottle per line. Optionally add a category after a comma:<br>
+          <code style="color:#93c5fd">Four Roses Bourbon, bourbon</code><br>
+          If you skip the category, it's guessed from the name.</p>
+        <textarea id="bulk-input" rows="6" placeholder="Four Roses Bourbon, bourbon&#10;Campari, amaro&#10;Dolin Dry Vermouth&#10;Peychaud's Bitters, bitters"></textarea>
+        <div style="display:flex;gap:.5rem;align-items:center">
+          <button class="btn btn-sm" id="bulk-add-btn">Add all</button>
+          <span id="bulk-status" style="font-size:.82rem;color:#86efac;display:none"></span>
+        </div>
+      </div>
+    </details>
     <div id="inv-error" class="error-msg"></div>
     <div class="list" id="bottle-list"></div>
   </div>
@@ -261,6 +274,33 @@
   });
 
   // ── inventory ──────────────────────────────────────────────
+  const _CAT_KEYWORDS = {
+    bourbon: ['bourbon'], rye: ['rye'], scotch: ['scotch','islay','highland','speyside'],
+    whiskey: ['whiskey','whisky','irish','japanese','tennessee'],
+    gin: ['gin'], vodka: ['vodka'], rum: ['rum','rhum','cachaca','cachaça'],
+    tequila: ['tequila','blanco','reposado','añejo','anejo'],
+    mezcal: ['mezcal'], brandy: ['brandy','armagnac','calvados'],
+    cognac: ['cognac'], amaro: ['amaro','campari','aperol','cynar','averna','fernet'],
+    liqueur: ['liqueur','triple sec','curaçao','curacao','maraschino','chartreuse','sambuca','kahlúa','baileys'],
+    vermouth: ['vermouth'], bitters: ['bitters','angostura','peychaud'],
+    wine: ['wine','port','sherry','madeira'], beer: ['beer','ale','lager'],
+  };
+
+  function _guessCategory(name) {
+    const lower = name.toLowerCase();
+    for (const [cat, keywords] of Object.entries(_CAT_KEYWORDS)) {
+      if (keywords.some(k => lower.includes(k))) return cat;
+    }
+    return 'spirit';
+  }
+
+  function _parseBottleLine(line) {
+    const [namePart, catPart] = line.split(',').map(s => s.trim());
+    if (!namePart) return null;
+    const category = catPart || _guessCategory(namePart);
+    return { name: namePart, category };
+  }
+
   let bottles = [];
 
   async function loadInventory() {
@@ -296,6 +336,36 @@
       document.getElementById('bottle-cat').value = '';
       await loadInventory();
     } catch (e) { show(errEl, e.message); }
+  });
+
+  document.getElementById('bulk-add-btn').addEventListener('click', async () => {
+    const lines = document.getElementById('bulk-input').value
+      .split('\n').map(l => l.trim()).filter(Boolean);
+    const errEl = document.getElementById('inv-error');
+    const statusEl = document.getElementById('bulk-status');
+    hide(errEl); hide(statusEl);
+
+    const entries = lines.map(_parseBottleLine).filter(Boolean);
+    if (!entries.length) { show(errEl, 'No valid lines found.'); return; }
+
+    const btn = document.getElementById('bulk-add-btn');
+    btn.disabled = true;
+    let added = 0, skipped = 0;
+    for (const { name, category } of entries) {
+      try {
+        await api('POST', '/inventory', { name, category });
+        added++;
+      } catch (e) {
+        if (e.message.includes('409') || e.message.toLowerCase().includes('already')) skipped++;
+        else { show(errEl, `Failed on "${name}": ${e.message}`); break; }
+      }
+    }
+    btn.disabled = false;
+    document.getElementById('bulk-input').value = '';
+    const parts = [`${added} added`];
+    if (skipped) parts.push(`${skipped} already existed`);
+    show(statusEl, parts.join(', ') + '.');
+    await loadInventory();
   });
 
   async function removeBottle(id) {
