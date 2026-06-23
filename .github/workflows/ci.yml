@@ -26,3 +26,12 @@ jobs:
 
       - name: Offline eval (mock mode, strict)
         run: python -m evals.run_evals --strict
+
+  deploy:
+    needs: test
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Trigger Railway redeploy
+        run: curl -s -X POST "${{ secrets.RAILWAY_DEPLOY_HOOK_URL }}"
