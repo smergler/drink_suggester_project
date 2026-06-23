@@ -27,15 +27,3 @@ jobs:
       - name: Offline eval (mock mode, strict)
         run: python -m evals.run_evals --strict
 
-  deploy:
-    needs: test
-    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-    runs-on: ubuntu-latest
-
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Push main → production branch
-        run: git push origin HEAD:production
