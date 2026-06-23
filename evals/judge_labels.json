@@ -1,0 +1,146 @@
+[
+    {
+      "suggestion_hash": "acb9ae77",
+      "constraints_respected": true,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "A Negroni is made with Gin, not Mezcal, this is a Oaxacan Negroni, Mezcal Negroni, or some other derivation"
+    },
+    {
+       "suggestion_hash": "617b62f5",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "The name implies a derivation, but this seems to be a classic manhattan "
+    },
+    {
+       "suggestion_hash": "68dbcbc4",
+      "constraints_respected": true,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "Similar to acb9ae77, this is not a Negroni, A Negroni is made with Gin, not Mezcal"
+    },
+    {
+       "suggestion_hash": "c223a99a",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "A very nice cozy drink "
+    },
+    {
+       "suggestion_hash": "67f1cbf3",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "The ratios are only slightly off, "
+    },
+    {
+       "suggestion_hash": "e7512701",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 2,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "An Old Fashioned usually also includes 2-3 dashes of bitters and a orange or lemon peel garnish"
+    },
+    {
+       "suggestion_hash": "3236453d",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "This is not Bourbon Neat, this is Bourbon on the rocks, and neat is better in a small or glencairn glass, not a rocks glass where it seems empty"
+    },
+    {
+       "suggestion_hash": "f9c13b22",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 3,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "I never liked equal bourbon to water ratio, especially on the rocks, which will water it down even further,  it should be teaspoon or smaller of water"
+    },
+    {
+       "suggestion_hash": "8c70d6b4",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": 5,
+      "notes": "This isn't a Smokey Negroni, it's a Mezcal White Negroni, Ice should also be in the glass already"
+    },
+    {
+       "suggestion_hash": "435e3c4c",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": ""
+    },
+    {
+       "suggestion_hash": "0eaae409",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 3,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "You need absinthe or something to replace it for a sazerac, "
+    },
+    {
+       "suggestion_hash": "24e9040b",
+      "constraints_respected": true,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "labels gin correctly as missing"
+    },
+    {
+       "suggestion_hash": "cb6147cc",
+      "constraints_respected": true,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "Peychaud's bitters and absinthe correctly marked as missing"
+    },
+    {
+       "suggestion_hash": "5670fbb7",
+      "constraints_respected": true,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": true,
+      "companion_targeting": null,
+      "notes": "correctly labels missing ingredients "
+    },
+    {
+       "suggestion_hash": "81f7faeb",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "An old fashioned has bitters in it, this recipe does not"
+    },
+    {
+       "suggestion_hash": "88615899",
+      "constraints_respected": null,
+      "occasion_fit": 5,
+      "recipe_plausibility": 5,
+      "name_accurate": false,
+      "companion_targeting": null,
+      "notes": "This is a plain Sazerac, and the description lists it as adapted to what I have, but it labels a few ingredients as missing"
+    }
+  ]
