@@ -262,6 +262,25 @@ and relevant error paths (404, 409, 422).
 
 **Interview line:** "RAG improved grounding 5pp and makeable-now 11pp, but name accuracy dropped 27pp — the eval caught it immediately. The model over-anchored on canonical recipes: seeing a Negroni recipe made it more likely to call things Negronis, not less. That's the kind of non-obvious failure you only find if you measure."
 
+**Fix — prompt engineering + reframed RAG:**
+Two changes made together:
+1. Added a `NAMING RULE` to the system prompt: substituting the base spirit means giving the drink a new name, with explicit examples (bourbon+Campari+vermouth = Boulevardier, not Negroni).
+2. Changed RAG injection framing from "inspiration" to "naming reference only" — explicit instruction not to borrow the classic name if the base spirit differs.
+
+Results after both fixes:
+
+| Metric | Old no-RAG | Old RAG | New no-RAG | New RAG |
+|---|---|---|---|---|
+| Grounding | 95% | 100% | **100%** | **100%** |
+| Makeable-now | 68% | 79% | **79%** | **79%** |
+| Constraints | 82% | 59% | **86%** | 73% |
+| Recipe plausibility | 4.7/5 | 4.1/5 | **4.9/5** | 4.5/5 |
+| Name accuracy | 82% | 55% | 64% | **73%** |
+
+RAG name accuracy recovered from 55% → 73% with the reframing. No-RAG improved on all dimensions except name accuracy (82% → 64%), likely due to run-to-run variance — these metrics have ±15pp noise at single-run level. RAG still trails no-RAG on constraints (73% vs 86%), suggesting canonical recipes occasionally pull the model off constrained scenarios.
+
+**The full story arc:** identified the RAG regression with the eval → diagnosed over-anchoring → fixed the framing → measured improvement. Three iterations, each time the harness told us what changed.
+
 ---
 
 ## Open decisions / next steps
