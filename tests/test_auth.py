@@ -76,8 +76,10 @@ def test_service_role_token_rejected(monkeypatch):
 
 def test_missing_env_var_raises_503(monkeypatch):
     monkeypatch.delenv("SUPABASE_JWT_TOKEN", raising=False)
+    monkeypatch.delenv("SUPABASE_PROJECT_URL", raising=False)
+    token = _make_token()  # valid HS256 token; env var absent → 503
     from backend.auth import get_current_user
-    creds = HTTPAuthorizationCredentials(scheme="Bearer", credentials="any")
+    creds = HTTPAuthorizationCredentials(scheme="Bearer", credentials=token)
     with pytest.raises(HTTPException) as exc:
         get_current_user(creds)
     assert exc.value.status_code == 503
