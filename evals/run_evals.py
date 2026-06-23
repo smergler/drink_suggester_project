@@ -40,6 +40,7 @@ def main() -> None:
     parser.add_argument("--strict", action="store_true", help="exit non-zero if any property assertion fails (for CI)")
     parser.add_argument("--model", default=None, help="override model id (live only; default: haiku)")
     parser.add_argument("--save-verdicts", metavar="PATH", help="write per-suggestion judge verdicts to JSON")
+    parser.add_argument("--save-suggestions", metavar="PATH", help="write full suggestion details + scenario context to JSON")
     args = parser.parse_args()
 
     if args.live:
@@ -61,6 +62,7 @@ def main() -> None:
     mk_now = 0
     property_failures: list[str] = []
     all_tagged: list[TaggedVerdict] = []
+    all_suggestions: list[dict] = []
 
     print(f"Mode: {mode}\n")
     header = f"{'scenario':<22}{'sugg':>5}{'grounded':>10}   violations"
@@ -75,6 +77,29 @@ def main() -> None:
 
         rec = recommend(sc.request, sc.inventory, llm)
         report = score(rec.suggestions, sc.inventory)
+
+        if args.save_suggestions:
+            companions = [
+                {"name": c.name, "likes": c.likes, "dislikes": c.dislikes}
+                for c in sc.request.companions
+            ]
+            for s in rec.suggestions:
+                all_suggestions.append({
+                    "scenario_id": sc.id,
+                    "occasion": sc.request.occasion,
+                    "mood": sc.request.mood,
+                    "constraints": sc.request.constraints,
+                    "companions": companions,
+                    "name": s.name,
+                    "description": s.description,
+                    "ingredients": [
+                        {"name": i.name, "quantity": i.quantity, "source": i.source.value}
+                        for i in s.ingredients
+                    ],
+                    "steps": s.steps,
+                    "why": s.why,
+                    "suited_for": s.suited_for,
+                })
         total += report.total
         grounded += report.grounded
 
@@ -158,6 +183,10 @@ def main() -> None:
         ]
         Path(args.save_verdicts).write_text(json.dumps(rows, indent=2))
         print(f"\nVerdicts saved to {args.save_verdicts}")
+
+    if all_suggestions and args.save_suggestions:
+        Path(args.save_suggestions).write_text(json.dumps(all_suggestions, indent=2))
+        print(f"Suggestions saved to {args.save_suggestions}")
 
     if property_failures:
         print(f"\nPROPERTY FAILURES ({len(property_failures)}):")
