@@ -37,13 +37,23 @@ DRINK = {
 }
 
 
-def _mock_db(session=None, session_list=None, drink_list=None):
+STATS = {
+    "total_sessions": 3,
+    "total_input_tokens": 1500,
+    "total_output_tokens": 600,
+    "avg_latency_ms": 1200,
+    "avg_bottle_count": 8,
+}
+
+
+def _mock_db(session=None, session_list=None, drink_list=None, stats=None):
     db = MagicMock()
     db.get_session.return_value = session
     db.get_active_session.return_value = session
     db.list_sessions.return_value = session_list or []
     db.end_session.return_value = session
     db.list_session_drinks.return_value = drink_list or []
+    db.get_session_stats.return_value = stats or STATS
     return db
 
 
@@ -144,3 +154,25 @@ def test_list_session_drinks_session_not_found():
         resp = client.get("/sessions/foreign-id/drinks", headers=AUTH_HEADER)
     assert resp.status_code == 404
     db.list_session_drinks.assert_not_called()
+
+
+def test_get_stats_returns_aggregates():
+    db = _mock_db(stats=STATS)
+    with _db_override(db):
+        resp = client.get("/sessions/stats", headers=AUTH_HEADER)
+    assert resp.status_code == 200
+    data = resp.json()
+    assert data["total_sessions"] == 3
+    assert data["total_input_tokens"] == 1500
+    assert data["avg_latency_ms"] == 1200
+    db.get_session_stats.assert_called_once()
+
+
+def test_stats_not_matched_as_session_id():
+    """GET /sessions/stats must not route to get_session({id}='stats')."""
+    db = _mock_db(stats=STATS)
+    with _db_override(db):
+        resp = client.get("/sessions/stats", headers=AUTH_HEADER)
+    assert resp.status_code == 200
+    db.get_session_stats.assert_called_once()
+    db.get_session.assert_not_called()

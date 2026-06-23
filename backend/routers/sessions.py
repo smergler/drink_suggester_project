@@ -18,8 +18,13 @@ def _db(
     return DB(creds.credentials)
 
 
-# IMPORTANT: /sessions/active MUST be registered before /sessions/{id} so FastAPI
-# does not match the literal "active" as a UUID path parameter.
+# IMPORTANT: /sessions/active and /sessions/stats MUST be registered before
+# /sessions/{id} so FastAPI does not match those literals as a UUID path parameter.
+
+@router.get("/stats")
+def get_session_stats(db: DB = Depends(_db)) -> dict:
+    return db.get_session_stats()
+
 
 @router.get("/active")
 def get_active_session(db: DB = Depends(_db)) -> dict:

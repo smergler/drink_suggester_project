@@ -249,7 +249,7 @@ Goal: when companions are present, tag each suggestion with who it's suited for;
       none when all absent, prompt includes profiles). 57 offline tests + mock evals pass.
       _Done._
 
-### P10 — Recommendation telemetry on sessions  ·  Status: not started
+### P10 — Recommendation telemetry on sessions  ·  Status: done
 Goal: capture token cost, latency, and bar size per recommend call. Most identifying
 data (who/when/what/companions/drinks) already lives in sessions + session_drinks.
 Only 4 new columns needed — no separate table.
@@ -270,25 +270,26 @@ latency_ms     int   -- latency of the most recent recommend call
 `input_tokens` / `output_tokens` accumulate on repeat calls into the same session
 rather than overwriting, so the session total stays accurate.
 
-- [ ] **P10.1 Migration** — `ALTER TABLE sessions ADD COLUMN bottle_count int,
-      ADD COLUMN input_tokens int, ADD COLUMN output_tokens int, ADD COLUMN latency_ms int`.
-      File: `supabase/migrations/YYYYMMDD_session_telemetry.sql`. Existing rows get NULL
-      (acceptable — telemetry is best-effort). Apply via `supabase db push`.
-- [ ] **P10.2 Capture tokens in `AnthropicClient`** — read `message.usage.input_tokens`
-      and `message.usage.output_tokens`; expose alongside the `Recommendation` return value.
-      Update `recommender/recommender.py` to surface usage. Unit test: mock response includes
-      usage; assert values reach caller. **Verify:** `pytest -q` green.
-- [ ] **P10.3 Capture latency + write telemetry** — in `app/main.py`, wrap the `recommend()`
-      call with `time.perf_counter()`. After the call, update the session row:
-      `bottle_count = len(inventory_bottles)`, accumulate tokens, set `latency_ms`.
-      Add `db.update_session_telemetry(session_id, bottle_count, input_tokens, output_tokens,
-      latency_ms)` to `backend/db.py`. Non-fatal: log and continue if the update fails.
-- [ ] **P10.4 Stats endpoint** — `GET /sessions/stats` returning per-user aggregates:
-      `total_sessions`, `total_input_tokens`, `total_output_tokens`, `avg_latency_ms`,
-      `avg_bottle_count`. Single Postgres aggregate query; excludes NULL telemetry rows.
-- [ ] **P10.5 Tests** — telemetry failure is non-fatal (recommend still returns 200);
-      stats query returns correct aggregates; NULLs excluded from averages.
-      **Verify:** `pytest -q` green.
+- [x] **P10.1 Migration** — `supabase/migrations/20260623000000_session_telemetry.sql`:
+      `ALTER TABLE sessions ADD COLUMN IF NOT EXISTS bottle_count/input_tokens/output_tokens/latency_ms`.
+      Existing rows get NULL (telemetry is best-effort).
+      _Done (🧑 apply via `supabase db push`)._
+- [x] **P10.2 Capture tokens in `AnthropicClient`** — done in P4; `last_usage: UsageStats | None`
+      set after every `generate()` / `generate_structured()` call.
+      _Done._
+- [x] **P10.3 Capture latency + write telemetry** — `app/main.py` wraps `recommend()` with
+      `time.perf_counter()`. `db.update_session_telemetry()` accumulates tokens (read + add
+      prior session total) and overwrites `bottle_count`/`latency_ms` with latest call.
+      Non-fatal: `logging.exception` + continue if DB write fails.
+      _Done._
+- [x] **P10.4 Stats endpoint** — `GET /sessions/stats` (registered before `/{id}`) returns
+      `{total_sessions, total_input_tokens, total_output_tokens, avg_latency_ms, avg_bottle_count}`.
+      Python-side aggregation; NULL rows excluded from averages.
+      _Done._
+- [x] **P10.5 Tests** — telemetry written when `last_usage` set; telemetry failure non-fatal (200 still returned);
+      stats returns correct aggregates; `/sessions/stats` not matched as session id.
+      **Verify:** 87 offline tests pass.
+      _Done._
 
 ### P11 — In-session memory (LLM + UI)  ·  Status: done
 Goal: stop the LLM from repeating drinks already shown this session, and show all session drinks

@@ -10,7 +10,9 @@ GET  /inventory          → list[Bottle]    (auth required)
 
 from __future__ import annotations
 
+import logging
 import os
+import time
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -126,7 +128,9 @@ def recommend_drinks(
     ]
 
     llm = AnthropicClient()
+    t0 = time.perf_counter()
     result = recommend(req, inventory_bottles, llm)
+    latency_ms = round((time.perf_counter() - t0) * 1000)
 
     # Save suggested drinks as session_drinks
     drinks_payload = [
@@ -139,6 +143,19 @@ def recommend_drinks(
         for s in result.suggestions
     ]
     db.create_session_drinks(session_id, drinks_payload)
+
+    # Write telemetry — non-fatal if it fails (e.g. DB unavailable).
+    if llm.last_usage is not None:
+        try:
+            db.update_session_telemetry(
+                session_id,
+                bottle_count=len(inventory_bottles),
+                input_tokens=llm.last_usage.input_tokens,
+                output_tokens=llm.last_usage.output_tokens,
+                latency_ms=latency_ms,
+            )
+        except Exception:
+            logging.exception("Failed to write session telemetry (non-fatal)")
 
     response = JSONResponse(
         content=result.model_dump(),

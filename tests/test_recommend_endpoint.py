@@ -96,3 +96,32 @@ def test_recommend_saves_drinks_to_session():
     session_id_arg, drinks_arg = db.create_session_drinks.call_args.args
     assert session_id_arg == "s1"
     assert drinks_arg[0]["name"] == "Boulevardier"
+
+
+def test_recommend_writes_telemetry_when_usage_present():
+    """When llm.last_usage is set, update_session_telemetry is called."""
+    from recommender.llm import UsageStats
+    mock_llm = MagicMock()
+    mock_llm.last_usage = UsageStats(input_tokens=500, output_tokens=200)
+
+    with _mocked(active_session=None) as db, \
+         patch("app.main.AnthropicClient", return_value=mock_llm):
+        resp = client.post("/recommend", json={"occasion": "movie night"}, headers=AUTH_HEADER)
+    assert resp.status_code == 200
+    db.update_session_telemetry.assert_called_once()
+    kwargs = db.update_session_telemetry.call_args.kwargs
+    assert kwargs["input_tokens"] == 500
+    assert kwargs["output_tokens"] == 200
+
+
+def test_recommend_telemetry_failure_is_nonfatal():
+    """If update_session_telemetry raises, the 200 response still returns."""
+    from recommender.llm import UsageStats
+    mock_llm = MagicMock()
+    mock_llm.last_usage = UsageStats(input_tokens=100, output_tokens=50)
+
+    with _mocked(active_session=None) as db, \
+         patch("app.main.AnthropicClient", return_value=mock_llm):
+        db.update_session_telemetry.side_effect = Exception("DB exploded")
+        resp = client.post("/recommend", json={"occasion": "movie night"}, headers=AUTH_HEADER)
+    assert resp.status_code == 200

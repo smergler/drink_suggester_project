@@ -184,6 +184,60 @@ class DB:
     # Companion history
     # ------------------------------------------------------------------
 
+    # ------------------------------------------------------------------
+    # Telemetry
+    # ------------------------------------------------------------------
+
+    def update_session_telemetry(
+        self,
+        session_id: str,
+        bottle_count: int,
+        input_tokens: int,
+        output_tokens: int,
+        latency_ms: int,
+    ) -> None:
+        """Accumulate tokens; overwrite bottle_count and latency_ms with latest call."""
+        existing = self.get_session(session_id)
+        if existing is None:
+            return
+        prev_in = existing.get("input_tokens") or 0
+        prev_out = existing.get("output_tokens") or 0
+        self._sb.table("sessions").update(
+            {
+                "bottle_count": bottle_count,
+                "input_tokens": prev_in + input_tokens,
+                "output_tokens": prev_out + output_tokens,
+                "latency_ms": latency_ms,
+            }
+        ).eq("id", session_id).execute()
+
+    def get_session_stats(self) -> dict:
+        """Per-user aggregate telemetry. NULL rows excluded from token/latency averages."""
+        rows = self._sb.table("sessions").select(
+            "id, input_tokens, output_tokens, latency_ms, bottle_count"
+        ).execute().data
+        total = len(rows)
+        token_rows = [r for r in rows if r.get("input_tokens") is not None]
+        latency_rows = [r for r in rows if r.get("latency_ms") is not None]
+        bottle_rows = [r for r in rows if r.get("bottle_count") is not None]
+        return {
+            "total_sessions": total,
+            "total_input_tokens": sum(r["input_tokens"] for r in token_rows),
+            "total_output_tokens": sum(r["output_tokens"] for r in token_rows),
+            "avg_latency_ms": (
+                round(sum(r["latency_ms"] for r in latency_rows) / len(latency_rows))
+                if latency_rows else None
+            ),
+            "avg_bottle_count": (
+                round(sum(r["bottle_count"] for r in bottle_rows) / len(bottle_rows))
+                if bottle_rows else None
+            ),
+        }
+
+    # ------------------------------------------------------------------
+    # Companion history
+    # ------------------------------------------------------------------
+
     def get_companion_history(self, companion_id: str) -> list[dict]:
         """All drinks from sessions where this companion was present."""
         sc_rows = (
