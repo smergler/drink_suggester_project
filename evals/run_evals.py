@@ -10,17 +10,27 @@ Live mode reads ANTHROPIC_API_KEY from the environment or a .env file.
 from __future__ import annotations
 
 import argparse
+import json
 import os
+from dataclasses import dataclass
+from pathlib import Path
 
 from dotenv import load_dotenv
 
 from evals.fixtures import SCENARIOS
 from evals.grounding import score
-from evals.judge import judge_suggestion, summarize
+from evals.judge import JudgeVerdict, judge_suggestion, summarize
 import evals.makeable as makeable_mod
 from evals.mock_responses import MOCK_RESPONSES
 from recommender.llm import AnthropicClient, MockClient
 from recommender.recommender import recommend
+
+
+@dataclass
+class TaggedVerdict:
+    scenario_id: str
+    suggestion_name: str
+    verdict: JudgeVerdict
 
 
 def main() -> None:
@@ -29,6 +39,7 @@ def main() -> None:
     parser.add_argument("--judge", action="store_true", help="also run the LLM-as-judge (live only)")
     parser.add_argument("--strict", action="store_true", help="exit non-zero if any property assertion fails (for CI)")
     parser.add_argument("--model", default=None, help="override model id (live only; default: haiku)")
+    parser.add_argument("--save-verdicts", metavar="PATH", help="write per-suggestion judge verdicts to JSON")
     args = parser.parse_args()
 
     if args.live:
@@ -49,7 +60,7 @@ def main() -> None:
     mk_uses_inv = 0
     mk_now = 0
     property_failures: list[str] = []
-    all_verdicts = []
+    all_tagged: list[TaggedVerdict] = []
 
     print(f"Mode: {mode}\n")
     header = f"{'scenario':<22}{'sugg':>5}{'grounded':>10}   violations"
@@ -100,7 +111,8 @@ def main() -> None:
 
         if args.live and args.judge:
             for s in rec.suggestions:
-                all_verdicts.append(judge_suggestion(s, sc.request, llm))
+                verdict = judge_suggestion(s, sc.request, llm)
+                all_tagged.append(TaggedVerdict(sc.id, s.name, verdict))
 
     rate = grounded / total if total else 0.0
     mk_uses_rate = mk_uses_inv / mk_total if mk_total else 0.0
@@ -110,7 +122,8 @@ def main() -> None:
     print(f"MAKEABLE RATE:     {mk_uses_inv}/{mk_total} = {mk_uses_rate:.0%}  (open-ended suggestions)")
     print(f"MAKEABLE-NOW RATE: {mk_now}/{mk_total} = {mk_now_rate:.0%}  (open-ended suggestions)")
 
-    if all_verdicts:
+    if all_tagged:
+        all_verdicts = [t.verdict for t in all_tagged]
         js = summarize(all_verdicts)
         name_acc = (
             f"{js.name_accuracy_rate:.0%} ({js.name_accuracy_n}/{js.n})"
@@ -128,6 +141,23 @@ def main() -> None:
             f"name accuracy {name_acc}, "
             f"companion targeting {comp_tgt}"
         )
+
+    if all_tagged and args.save_verdicts:
+        rows = [
+            {
+                "scenario_id": t.scenario_id,
+                "suggestion_name": t.suggestion_name,
+                "constraints_respected": t.verdict.constraints_respected,
+                "occasion_fit": t.verdict.occasion_fit,
+                "recipe_plausibility": t.verdict.recipe_plausibility,
+                "name_accurate": t.verdict.name_accurate,
+                "companion_targeting": t.verdict.companion_targeting,
+                "notes": t.verdict.notes,
+            }
+            for t in all_tagged
+        ]
+        Path(args.save_verdicts).write_text(json.dumps(rows, indent=2))
+        print(f"\nVerdicts saved to {args.save_verdicts}")
 
     if property_failures:
         print(f"\nPROPERTY FAILURES ({len(property_failures)}):")

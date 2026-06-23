@@ -1,0 +1,222 @@
+[
+  {
+    "scenario_id": "classic_rich",
+    "suggestion_name": "Negroni",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": false,
+    "companion_targeting": null,
+    "notes": "Called a Negroni but substitutes mezcal for gin, violating the classic recipe; this is a creative variation that should have a different name."
+  },
+  {
+    "scenario_id": "classic_rich",
+    "suggestion_name": "Manhattan",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Manhattan executed with excellent ingredients and proper technique; perfectly suited to a spirit-forward dinner party vibe."
+  },
+  {
+    "scenario_id": "negroni_no_sweet",
+    "suggestion_name": "Negroni",
+    "constraints_respected": false,
+    "occasion_fit": 5,
+    "recipe_plausibility": 4,
+    "name_accurate": false,
+    "companion_targeting": null,
+    "notes": "Calling this a 'Negroni' is inaccurate since it substitutes mezcal for gin, violating the classic recipe; sweet vermouth also contradicts the 'nothing too sweet' constraint."
+  },
+  {
+    "scenario_id": "sparse_old_fashioned",
+    "suggestion_name": "Hot Toddy",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Hot Toddy executed faithfully with proper technique and appropriate spirit choice for a warming nightcap."
+  },
+  {
+    "scenario_id": "tiki_adversarial",
+    "suggestion_name": "Tropical Bourbon Punch",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 4,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Solid tropical punch with good fruit balance, though bourbon-forward base is less traditional for tiki than rum would be."
+  },
+  {
+    "scenario_id": "impossible_count",
+    "suggestion_name": "Old Fashioned",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Old Fashioned executed properly with quality bourbon; slightly conservative for a 'surprise me' vibe but impeccably made."
+  },
+  {
+    "scenario_id": "impossible_count",
+    "suggestion_name": "Bourbon Smash",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Well-executed citrus bourbon cocktail with proper proportions and technique; perfectly suited for casual evening surprise."
+  },
+  {
+    "scenario_id": "impossible_count",
+    "suggestion_name": "Bourbon Neat or with Water",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "A solid, unpretentious choice for casual evening; 'surprise me' vibe is somewhat undermined by the simplicity, but the suggestion is technically sound and well-executed."
+  },
+  {
+    "scenario_id": "companion_mezcal",
+    "suggestion_name": "Mezcal Negroni",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": false,
+    "companion_targeting": 5,
+    "notes": "While the drink itself is excellent and perfectly suited, calling it a 'Mezcal Negroni' is inaccurate since a classic Negroni requires gin; this is a creative variation that deserves its own name."
+  },
+  {
+    "scenario_id": "margarita_no_tequila",
+    "suggestion_name": "Mezcal Paloma",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Excellent match for taco night with authentic Paloma structure, bright citrus profile, and mezcal's smoky complexity complements Mexican cuisine perfectly."
+  },
+  {
+    "scenario_id": "movie_night",
+    "suggestion_name": "Sazerac",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Sazerac recipe executed correctly; bold and warming fits cozy mood well, though the spirit-forward intensity is slightly more sophisticated than typical movie-night casual."
+  },
+  {
+    "scenario_id": "negroni_no_gin",
+    "suggestion_name": "Negroni",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Canonical Negroni recipe executed perfectly for aperitivo hour with proper technique and garnish."
+  },
+  {
+    "scenario_id": "sazerac_no_peychauds",
+    "suggestion_name": "Sazerac",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Canonical Sazerac recipe executed correctly with proper absinthe rinse technique and traditional ingredients."
+  },
+  {
+    "scenario_id": "mai_tai_bourbon_only",
+    "suggestion_name": "Mai Tai",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Mai Tai recipe executed correctly for a tropical beach party setting."
+  },
+  {
+    "scenario_id": "high_count_pad",
+    "suggestion_name": "Old Fashioned",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Old Fashioned executed properly with quality bourbon; well-suited to casual evening sipping, though 'surprise me' mood might benefit from something less traditional."
+  },
+  {
+    "scenario_id": "high_count_pad",
+    "suggestion_name": "Sazerac-Style Rye",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Classic Sazerac recipe executed correctly with proper technique and proportions; perfectly suits a casual evening with sophisticated surprise appeal."
+  },
+  {
+    "scenario_id": "high_count_pad",
+    "suggestion_name": "Mezcal Negroni",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": false,
+    "companion_targeting": null,
+    "notes": "While the recipe is excellent and perfectly suited to a casual evening, calling it a 'Negroni' is inaccurate since the classic uses gin, not mezcal\u2014this is a creative variation that deserves its own identity."
+  },
+  {
+    "scenario_id": "high_count_pad",
+    "suggestion_name": "Mezcal Margarita",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 4,
+    "name_accurate": false,
+    "companion_targeting": null,
+    "notes": "Classic Margarita traditionally includes orange liqueur (Cointreau/triple sec); this omission makes it a mezcal sour rather than a true Margarita."
+  },
+  {
+    "scenario_id": "high_count_pad",
+    "suggestion_name": "Bourbon Smash",
+    "constraints_respected": true,
+    "occasion_fit": 5,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": null,
+    "notes": "Well-executed herbaceous whiskey sour with proper technique and proportions that delivers on its casual, refreshing promise."
+  },
+  {
+    "scenario_id": "companion_smoke_sweet",
+    "suggestion_name": "Mezcal Negroni",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": false,
+    "companion_targeting": 3,
+    "notes": "While the drink excellently suits Alex's preferences, calling it a 'Negroni' is inaccurate since it substitutes mezcal for gin, making it a creative variation rather than the classic; Sam is excluded despite the drink being spirit-forward and bitter, which correctly respects their dislikes."
+  },
+  {
+    "scenario_id": "companion_smoke_sweet",
+    "suggestion_name": "Bourbon Manhattan",
+    "constraints_respected": true,
+    "occasion_fit": 4,
+    "recipe_plausibility": 5,
+    "name_accurate": true,
+    "companion_targeting": 2,
+    "notes": "Classic Manhattan recipe is sound and suits the occasion, but targeting only Sam ignores Alex's stated preferences entirely\u2014a mezcal-forward option would better serve this group."
+  },
+  {
+    "scenario_id": "companion_bitter_only",
+    "suggestion_name": "Negroni",
+    "constraints_respected": false,
+    "occasion_fit": 5,
+    "recipe_plausibility": 4,
+    "name_accurate": false,
+    "companion_targeting": 2,
+    "notes": "Called a Negroni but substitutes bourbon for gin (canonical recipe uses gin, not whiskey), and the sweet vermouth contradicts Jamie's stated dislike of sweet drinks."
+  }
+]
