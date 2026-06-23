@@ -1,4 +1,4 @@
-# Drink Suggester
+# BarBack
 
 [![CI](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml/badge.svg)](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml)
 

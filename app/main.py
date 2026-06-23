@@ -39,7 +39,7 @@ load_dotenv()
 
 limiter = Limiter(key_func=get_remote_address, default_limits=["20/minute"])
 
-app = FastAPI(title="Drink Suggester")
+app = FastAPI(title="BarBack")
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 

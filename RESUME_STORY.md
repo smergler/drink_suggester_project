@@ -1,4 +1,4 @@
-# Drink Suggester — Resume / Interview Story
+# BarBack — Resume / Interview Story
 
 Living notes capturing the narrative, decisions, and metrics for this project.
 Purpose: a portfolio piece aimed at **AI/ML-leaning roles** (senior generalist SWE
