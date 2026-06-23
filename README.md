@@ -1,5 +1,7 @@
 # Drink Suggester
 
+[![CI](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml/badge.svg)](https://github.com/smergler/drink_suggester_project/actions/workflows/ci.yml)
+
 An LLM cocktail recommender **grounded in the user's actual bottle inventory**, built
 eval-first: the centerpiece is a measurement harness that proves the recommendations only
 use ingredients you own (or honestly flags what you'd need to buy), not just a model call.
