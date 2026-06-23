@@ -10,6 +10,7 @@ Live mode reads ANTHROPIC_API_KEY from the environment or a .env file.
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 import os
 from dataclasses import dataclass
@@ -26,10 +27,20 @@ from recommender.llm import AnthropicClient, MockClient
 from recommender.recommender import recommend
 
 
+def _suggestion_hash(suggestion) -> str:
+    """Stable 8-char hash of sorted ingredient names+sources — recipe identity."""
+    key = sorted(
+        [{"name": i.name, "source": i.source.value} for i in suggestion.ingredients],
+        key=lambda x: x["name"],
+    )
+    return hashlib.sha256(json.dumps(key, sort_keys=True).encode()).hexdigest()[:8]
+
+
 @dataclass
 class TaggedVerdict:
     scenario_id: str
     suggestion_name: str
+    suggestion_hash: str
     verdict: JudgeVerdict
 
 
@@ -85,6 +96,7 @@ def main() -> None:
             ]
             for s in rec.suggestions:
                 all_suggestions.append({
+                    "suggestion_hash": _suggestion_hash(s),
                     "scenario_id": sc.id,
                     "occasion": sc.request.occasion,
                     "mood": sc.request.mood,
@@ -137,7 +149,7 @@ def main() -> None:
         if args.live and args.judge:
             for s in rec.suggestions:
                 verdict = judge_suggestion(s, sc.request, llm)
-                all_tagged.append(TaggedVerdict(sc.id, s.name, verdict))
+                all_tagged.append(TaggedVerdict(sc.id, s.name, _suggestion_hash(s), verdict))
 
     rate = grounded / total if total else 0.0
     mk_uses_rate = mk_uses_inv / mk_total if mk_total else 0.0
@@ -170,6 +182,7 @@ def main() -> None:
     if all_tagged and args.save_verdicts:
         rows = [
             {
+                "suggestion_hash": t.suggestion_hash,
                 "scenario_id": t.scenario_id,
                 "suggestion_name": t.suggestion_name,
                 "constraints_respected": t.verdict.constraints_respected,
