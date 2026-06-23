@@ -6,3 +6,5 @@ uvicorn[standard]>=0.30
 slowapi>=0.1
 supabase>=2.0
 PyJWT>=2.8
+numpy==2.5.0
+sentence-transformers==5.6.0

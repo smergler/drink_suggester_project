@@ -52,6 +52,7 @@ def main() -> None:
     parser.add_argument("--model", default=None, help="override model id (live only; default: haiku)")
     parser.add_argument("--save-verdicts", metavar="PATH", help="write per-suggestion judge verdicts to JSON")
     parser.add_argument("--save-suggestions", metavar="PATH", help="write full suggestion details + scenario context to JSON")
+    parser.add_argument("--rag", action="store_true", help="enable retrieval augmentation (requires built index)")
     args = parser.parse_args()
 
     if args.live:
@@ -86,7 +87,7 @@ def main() -> None:
         else:
             llm = MockClient(MOCK_RESPONSES, key=sc.id)
 
-        rec = recommend(sc.request, sc.inventory, llm)
+        rec = recommend(sc.request, sc.inventory, llm, use_retrieval=args.rag)
         report = score(rec.suggestions, sc.inventory)
 
         if args.save_suggestions:

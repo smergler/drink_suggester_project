@@ -2,6 +2,12 @@ from __future__ import annotations
 
 from .schemas import Bottle, RecommendRequest
 
+try:
+    from retrieval.search import Recipe, search as _search
+    _RETRIEVAL_AVAILABLE = True
+except ImportError:
+    _RETRIEVAL_AVAILABLE = False
+
 SYSTEM_PROMPT = """You are a skilled bartender with deep cocktail knowledge.
 You recommend drinks the user can actually make from the bottles they own.
 
@@ -34,7 +40,31 @@ Respond with ONLY a JSON object of this shape, no prose:
 {"suggestions":[{"name": "...","description":"...","ingredients":[{"name":"...","quantity":"...","source":"inventory|pantry|perishable|missing"}],"steps":["..."],"why":"...","suited_for":["me","companion name"]}]}"""
 
 
-def build_context(req: RecommendRequest, inventory: list[Bottle]) -> str:
+def _retrieval_query(req: RecommendRequest, inventory: list[Bottle]) -> str:
+    parts = [req.occasion]
+    if req.mood:
+        parts.append(req.mood)
+    spirits = [b.name for b in inventory if b.category in (
+        "bourbon", "rye", "whiskey", "scotch", "gin", "rum", "tequila",
+        "mezcal", "vodka", "brandy", "cognac", "calvados",
+    )]
+    if spirits:
+        parts.append("with " + ", ".join(spirits[:4]))
+    return " ".join(parts)
+
+
+def _format_retrieved(recipes: list) -> str:
+    lines = ["\nCanonical reference recipes (use these to name drinks correctly):"]
+    for r in recipes:
+        ingredients = ", ".join(
+            f"{i['name']} ({i['measure']})" if i.get("measure") else i["name"]
+            for i in r.ingredients[:8]
+        )
+        lines.append(f"- {r.name}: {ingredients}")
+    return "\n".join(lines)
+
+
+def build_context(req: RecommendRequest, inventory: list[Bottle], use_retrieval: bool = False) -> str:
     lines: list[str] = ["<user_data>"]
 
     lines.append(f"Occasion: {req.occasion}")
@@ -75,4 +105,10 @@ def build_context(req: RecommendRequest, inventory: list[Bottle]) -> str:
             lines.append(f"- {fb.name}: {fb.verdict}")
 
     lines.append("</user_data>")
+
+    if use_retrieval and _RETRIEVAL_AVAILABLE:
+        query = _retrieval_query(req, inventory)
+        retrieved = _search(query, k=5)
+        lines.append(_format_retrieved(retrieved))
+
     return "\n".join(lines)

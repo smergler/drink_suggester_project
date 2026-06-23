@@ -57,9 +57,12 @@ class RecommendationError(Exception):
 
 
 def recommend(
-    req: RecommendRequest, inventory: list[Bottle], llm: LLMClient
+    req: RecommendRequest,
+    inventory: list[Bottle],
+    llm: LLMClient,
+    use_retrieval: bool = False,
 ) -> Recommendation:
-    user_msg = build_context(req, inventory)
+    user_msg = build_context(req, inventory, use_retrieval=use_retrieval)
 
     # Use structured outputs when available (AnthropicClient) — API guarantees valid JSON.
     if hasattr(llm, "generate_structured"):
