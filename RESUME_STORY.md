@@ -231,6 +231,39 @@ and relevant error paths (404, 409, 422).
 
 ---
 
+## RAG / retrieval (P3 — completed)
+
+**What was built:**
+- `scripts/fetch_cocktaildb.py` — fetched 426 canonical recipes from CocktailDB API into `data/cocktails.json`
+- `retrieval/index.py` — embeds each recipe (name + ingredients + instructions[:200]) with `all-MiniLM-L6-v2` (sentence-transformers); caches 426×384 vectors to `data/cocktails.vectors.npy`
+- `retrieval/search.py` — cosine similarity search; `search(query, k=5) -> list[Recipe]`
+- `build_context()` gains `use_retrieval=True` — appends top-5 retrieved recipes as canonical naming references *outside* the `<user_data>` fence
+- `run_evals.py` gains `--rag` flag for A/B comparison
+
+**Retrieval quality:** `evals/retrieval_eval.py` — recall@10 = **80% (8/10)**. Two misses:
+- "classic gin aperitivo bitter" → Negroni: vocabulary gap — the corpus recipe text doesn't use "aperitivo" or describe itself as bitter
+- "gin lemon sour egg white" → Gin Fizz/Tom Collins: CocktailDB doesn't include egg white for these, so the query terms don't match
+
+**A/B eval results (with/without RAG, same 14 scenarios):**
+
+| Metric | No RAG | With RAG |
+|---|---|---|
+| Grounding | 95% | **100%** |
+| Makeable-now | 68% | **79%** |
+| Constraints respected | **82%** | 59% |
+| Recipe plausibility | **4.7/5** | 4.1/5 |
+| Name accuracy | **82%** | 55% |
+
+**The unexpected finding:** RAG improved grounding and makeable-now but *hurt* name accuracy and constraint adherence. Diagnosed as over-anchoring — the model sees a canonical Negroni recipe with gin and either tries to use gin (violating constraints) or follows the canonical recipe too closely rather than adapting to the user's actual bar. Injecting recipes as inspiration works against a system designed for substitution.
+
+**The honest conclusion:** RAG helps the "can I make this?" dimension (more owned bottles anchor the suggestions) but hurts the "does this respect my constraints?" dimension. For this use case, ingredient-coverage retrieval (set math) might be more appropriate than semantic retrieval — find recipes the user *can* make rather than recipes that are *similar* to what they asked for.
+
+**Also notable:** name accuracy varied 55%–82% across runs in the same session with temperature=0.3. A single-run number isn't reliable for this dimension; need multiple runs and averaging, or structured outputs that constrain naming.
+
+**Interview line:** "RAG improved grounding 5pp and makeable-now 11pp, but name accuracy dropped 27pp — the eval caught it immediately. The model over-anchored on canonical recipes: seeing a Negroni recipe made it more likely to call things Negronis, not less. That's the kind of non-obvious failure you only find if you measure."
+
+---
+
 ## Open decisions / next steps
 
 - [x] **Pantry boundary:** decided — honey/cinnamon stay as legitimate "grab these"
