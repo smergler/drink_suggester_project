@@ -184,6 +184,55 @@ Goal: replace "ask for JSON + parse + retry" with schema-guaranteed output (Haik
       path returns a valid `Recommendation`. **Verify:** `pytest -q` green; `--live` grounding/makeable unchanged.
 - [ ] **P4.6 Record** "moved to schema-guaranteed output, parse failures → 0" in `RESUME_STORY`; commit.
 
+### P7 — Session history + verdict browser  ·  Status: not started
+Goal: let the user review past sessions and manage verdicts for themselves and companions.
+- [ ] **P7.1 Add "History" tab** to the SPA. On load, call `GET /sessions` and render a list:
+      occasion, date, # drinks suggested, # verdicts recorded. Clicking a session expands it.
+- [ ] **P7.2 Expanded session view** — list the session's drinks from `GET /sessions/{id}/drinks`.
+      For each drink show: name, user's verdict badge (liked / not tried / didn't like) if set.
+      Verdicts come from `session_drinks.verdict` (already stored); map values to display labels.
+- [ ] **P7.3 Companion verdicts in session view** — for each session drink, show which companions
+      were in the session (`session_companions`) and allow setting a per-companion verdict inline.
+      This requires a new endpoint or extending `PATCH /session-drinks/{id}/verdict` to accept
+      a `companion_id` (currently only records one verdict per drink — see spec, may need schema change).
+      Decide: separate `companion_drink_verdicts` table vs a JSONB column. Document in `docs/backend-spec.md`.
+- [ ] **P7.4 Companion exposure history** — "What has {companion} been offered?" view. A page/panel
+      per companion showing all drinks they were present for + their verdict on each. Query:
+      `sessions JOIN session_companions JOIN session_drinks` filtered by `companion_id`.
+      Add `GET /companions/{id}/history` endpoint returning `[{session_id, drink_name, verdict}]`.
+- [ ] **P7.5 Tests** — unit tests for any new endpoints; update existing session_drinks tests if
+      the verdict schema changes. **Verify:** `pytest -q` green.
+
+### P8 — Inventory category filtering  ·  Status: not started
+Goal: filter the inventory list by category with a whiskey super-group.
+- [ ] **P8.1 Add a category filter bar** above the bottle list in the Inventory tab.
+      Buttons/chips: All · Whiskey (group) · Bourbon · Scotch · Rum · Tequila · Mezcal · Vodka · Liqueur · Vermouth · Bitters · Other.
+      "Whiskey" matches `category IN (bourbon, scotch, rye, whiskey, irish, japanese)`.
+      All others are exact category matches. "Other" catches anything not in the list.
+- [ ] **P8.2 Filter client-side** — filtering operates on the already-loaded `bottles` array (no
+      extra API calls). Update `renderBottles()` to slice from the filtered set; keep pagination
+      working correctly (reset to page 0 on filter change).
+- [ ] **P8.3 Active filter state** — highlight the active filter chip; "All" is default.
+      Persist the filter across pagination; clear it when new bottles are added.
+
+### P9 — Per-companion recommendation targeting + evals  ·  Status: not started
+Goal: when companions are present, tag each suggestion with who it's suited for; add eval coverage.
+- [ ] **P9.1 Extend `Suggestion` schema** — add `suited_for: list[str]` (companion names + "me")
+      populated by the LLM. The LLM receives companion profiles and, for each suggestion, names
+      who it expects to enjoy it based on their likes/dislikes.
+- [ ] **P9.2 Update the system prompt** in `recommender/context.py` to instruct the model to fill
+      `suited_for` when companions are present; empty list = suits everyone or no companions.
+- [ ] **P9.3 Render `suited_for` in the frontend** — small chips below each suggestion card:
+      "For: you, Alice" in the card's recommendation text.
+- [ ] **P9.4 Add eval scenarios with companions** — add 2–3 fixtures to `evals/fixtures.py` that
+      include `companions` with known likes/dislikes. Add a mock response and a property assertion:
+      `suited_for` must only name companions (or "me"), not invent new people.
+- [ ] **P9.5 Add a `companion_targeting` judge dimension** — extend `JudgeVerdict` in `evals/judge.py`
+      with `companion_targeting: float | None` (1–5: does the `suited_for` tagging match the
+      companion profiles?). Update `JUDGE_SYSTEM`, add unit test, re-run judge live. Record in
+      `RESUME_STORY.md`.
+- [ ] **P9.6 Tests** — update `test_recommender.py` to cover `suited_for` field; `pytest -q` green.
+
 ### P5 — Observability / tracing  ·  Status: not started
 Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
 - [ ] **P5.1 Define a trace record** (dataclass): `ts, model, scenario_id, input_tokens, output_tokens,
