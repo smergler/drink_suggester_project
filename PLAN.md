@@ -233,6 +233,57 @@ Goal: when companions are present, tag each suggestion with who it's suited for;
       `RESUME_STORY.md`.
 - [ ] **P9.6 Tests** — update `test_recommender.py` to cover `suited_for` field; `pytest -q` green.
 
+### P10 — Recommendation request telemetry  ·  Status: not started
+Goal: durable, queryable record of every /recommend call — who, when, what they asked,
+how large their bar was, how many tokens it cost, and what came back. Normalized so
+per-user aggregates and per-request drilldowns are both cheap queries.
+
+**Data model (new `recommendation_requests` table):**
+```
+recommendation_requests
+  id               uuid PK
+  user_id          uuid FK → auth.users   (RLS: auth.uid() = user_id)
+  session_id       uuid FK → sessions     (nullable — links to the session this fed)
+  created_at       timestamptz
+  occasion         text
+  mood             text
+  companion_count  int        -- snapshot: # companions sent with this request
+  bottle_count     int        -- snapshot: # active bottles at time of call
+  suggestion_count int        -- # suggestions returned (1–10)
+  input_tokens     int
+  output_tokens    int
+  latency_ms       int
+```
+Drink results are NOT duplicated here — they live in `session_drinks` (linked via
+`session_id`). Companions are NOT duplicated — `session_companions` covers it.
+Bottle count is a scalar snapshot, not a FK, because the bar changes over time.
+
+- [ ] **P10.1 Migration** — add `recommendation_requests` table + RLS policy
+      (`auth.uid() = user_id`) + index on `(user_id, created_at DESC)`.
+      File: `supabase/migrations/YYYYMMDD_recommendation_requests.sql`.
+      Apply via `supabase db push`. **Verify:** table visible in Supabase dashboard.
+- [ ] **P10.2 Capture tokens in `AnthropicClient`** — read `message.usage.input_tokens`
+      and `message.usage.output_tokens` from the API response; expose them on the return
+      value of `AnthropicClient.generate()` (e.g. return `(recommendation, usage)`).
+      Update `recommender/recommender.py` to thread usage through. Unit test: mock
+      response includes usage; assert values reach the caller. **Verify:** `pytest -q` green.
+- [ ] **P10.3 Capture latency** — wrap the `AnthropicClient.generate()` call in
+      `app/main.py` with `time.perf_counter()` before/after; compute `latency_ms`.
+- [ ] **P10.4 Write the request record** — after `recommend()` returns in `app/main.py`,
+      call `db.create_recommendation_request(...)` with all fields. Non-fatal: log and
+      continue if the insert fails (telemetry must not break the recommend path).
+      Add `create_recommendation_request` to `backend/db.py`.
+- [ ] **P10.5 `GET /recommendation-requests` endpoint** — paginated list for the
+      current user, newest first. Returns the flat table row (no joins needed for the list).
+      Add `GET /recommendation-requests/{id}` for drilldown, joining `session_drinks` via
+      `session_id` to include the drink results inline.
+- [ ] **P10.6 Per-user aggregates endpoint** — `GET /recommendation-requests/stats`
+      returning: `total_requests`, `total_input_tokens`, `total_output_tokens`,
+      `avg_latency_ms`, `avg_bottle_count`, `avg_suggestion_count`. Computed in a single
+      Postgres aggregate query, not in Python. Useful for cost monitoring per user.
+- [ ] **P10.7 Tests** — unit tests for P10.4–P10.6: telemetry failure is non-fatal;
+      list is user-scoped; stats aggregate correctly. **Verify:** `pytest -q` green.
+
 ### P5 — Observability / tracing  ·  Status: not started
 Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
 - [ ] **P5.1 Define a trace record** (dataclass): `ts, model, scenario_id, input_tokens, output_tokens,
