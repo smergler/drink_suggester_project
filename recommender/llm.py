@@ -30,6 +30,13 @@ class MockClient:
         return self._responses[self._key]
 
 
+# Models that rejected the `temperature` parameter (Opus 4.6+ family, Fable).
+_MODELS_WITHOUT_TEMPERATURE = frozenset({
+    "claude-opus-4-6", "claude-opus-4-7", "claude-opus-4-8",
+    "claude-fable-5", "claude-mythos-5",
+})
+
+
 class AnthropicClient:
     """Live client that calls the Anthropic Messages API."""
 
@@ -48,14 +55,18 @@ class AnthropicClient:
         self._temperature = temperature
         self.last_usage: UsageStats | None = None
 
+    def _base_params(self) -> dict[str, Any]:
+        params: dict[str, Any] = {"model": self._model, "max_tokens": self._max_tokens}
+        if self._model not in _MODELS_WITHOUT_TEMPERATURE:
+            params["temperature"] = self._temperature
+        return params
+
     def generate(self, system: str, user: str) -> str:
         from anthropic import Anthropic  # lazy import; optional dependency
 
         client = Anthropic(api_key=self._api_key)
         msg = client.messages.create(
-            model=self._model,
-            max_tokens=self._max_tokens,
-            temperature=self._temperature,
+            **self._base_params(),
             system=system,
             messages=[{"role": "user", "content": user}],
         )
@@ -71,9 +82,7 @@ class AnthropicClient:
 
         client = Anthropic(api_key=self._api_key)
         msg = client.messages.create(
-            model=self._model,
-            max_tokens=self._max_tokens,
-            temperature=self._temperature,
+            **self._base_params(),
             system=system,
             messages=[{"role": "user", "content": user}],
             output_config={"format": {"type": "json_schema", "schema": schema}},
