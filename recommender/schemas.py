@@ -47,6 +47,11 @@ class CompanionProfile(BaseModel):
     dislikes: list[str] = Field(default_factory=list)
 
 
+class SessionDrinkFeedback(BaseModel):
+    name: str
+    verdict: str  # "liked" | "disliked" | "neutral"
+
+
 class RecommendRequest(BaseModel):
     occasion: str = Field(..., max_length=200)
     mood: str | None = Field(None, max_length=200)
@@ -56,3 +61,7 @@ class RecommendRequest(BaseModel):
     companion_ids: list[str] = Field(default_factory=list)
     # Fresh ingredients the user confirms they have on hand right now.
     available_perishables: list[str] = Field(default_factory=list)
+    # Server-populated: drinks already suggested this session (LLM deduplication).
+    already_suggested: list[str] = Field(default_factory=list)
+    # Server-populated: non-neutral verdicts from this session.
+    session_feedback: list[SessionDrinkFeedback] = Field(default_factory=list)

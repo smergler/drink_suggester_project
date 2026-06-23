@@ -59,5 +59,15 @@ def build_context(req: RecommendRequest, inventory: list[Bottle]) -> str:
     if req.constraints:
         lines.append("\nConstraints: " + "; ".join(req.constraints))
 
+    if req.already_suggested:
+        lines.append("\nDrinks already suggested this session — do NOT suggest these again:")
+        for name in req.already_suggested:
+            lines.append(f"- {name}")
+
+    if req.session_feedback:
+        lines.append("\nFeedback from this session:")
+        for fb in req.session_feedback:
+            lines.append(f"- {fb.name}: {fb.verdict}")
+
     lines.append("</user_data>")
     return "\n".join(lines)

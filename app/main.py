@@ -33,6 +33,7 @@ from recommender.schemas import (
     CompanionProfile,
     Recommendation,
     RecommendRequest,
+    SessionDrinkFeedback,
 )
 
 load_dotenv()
@@ -102,11 +103,8 @@ def recommend_drinks(
         for b in db_bottles
     ]
 
-    llm = AnthropicClient()
-    result = recommend(req, inventory_bottles, llm)
-
-    # Create or reuse the active session. Reusing intentionally allows multiple
-    # recommend calls per session — each adds a new batch of suggestions.
+    # Get or create the active session before recommend() so we can fetch
+    # prior drinks and pass them as context (deduplication + in-session feedback).
     session = db.get_active_session()
     if session is None:
         session = db.create_session(
@@ -117,6 +115,18 @@ def recommend_drinks(
     session_id: str | None = session.get("id")
     if session_id is None:
         raise HTTPException(status_code=500, detail="Failed to create session")
+
+    # Populate in-session memory so the LLM won't repeat drinks or ignore verdicts.
+    prior_drinks = db.list_session_drinks(session_id)
+    req.already_suggested = [d["name"] for d in prior_drinks]
+    req.session_feedback = [
+        SessionDrinkFeedback(name=d["name"], verdict=d["verdict"])
+        for d in prior_drinks
+        if d.get("verdict") and d["verdict"] != "neutral"
+    ]
+
+    llm = AnthropicClient()
+    result = recommend(req, inventory_bottles, llm)
 
     # Save suggested drinks as session_drinks
     drinks_payload = [

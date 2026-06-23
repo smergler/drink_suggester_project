@@ -63,6 +63,7 @@
     .inline-form { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
     .inline-form input { flex: 1; }
     .divider { border: none; border-top: 1px solid #2d3561; margin: 1.25rem 0; }
+    .session-divider { text-align: center; color: #555; font-size: 0.78rem; margin: 1.5rem 0 0.5rem; letter-spacing: 0.05em; }
   </style>
 </head>
 <body>
@@ -576,7 +577,6 @@
     const btn = document.getElementById('rec-btn');
     btn.disabled = true; btn.textContent = 'Thinking…';
     hide(errEl);
-    document.getElementById('results').innerHTML = '';
 
     // Build companion profiles: fetch saved prefs + merge one-time seed likes
     const companions_payload = await Promise.all(sessionCompanions.map(async c => {
@@ -614,18 +614,31 @@
       currentSessionId = res.headers.get('x-session-id');
       const { suggestions } = await res.json();
 
-      // Fetch session_drinks to get IDs for verdict buttons
-      let drinkIds = [];
+      // Fetch all session drinks — gives us IDs for verdict buttons and the full
+      // history needed to render every batch suggested this session.
+      let sessionDrinks = [];
       if (currentSessionId) {
         try {
-          const sessionDrinks = await api('GET', `/sessions/${currentSessionId}/drinks`);
-          // Match by name (order preserved)
-          drinkIds = sessionDrinks.slice(-suggestions.length).map(d => d.id);
+          sessionDrinks = await api('GET', `/sessions/${currentSessionId}/drinks`);
         } catch (_) { /* best effort */ }
       }
 
-      document.getElementById('results').innerHTML =
-        suggestions.map((s, i) => renderCard(s, drinkIds[i])).join('');
+      // Prior drinks = everything except the batch just added.
+      const priorDrinks = sessionDrinks.slice(0, sessionDrinks.length - suggestions.length);
+
+      // New batch: use the response objects (richer description) with IDs from DB.
+      const newHtml = suggestions.map((s, i) => {
+        const id = sessionDrinks[priorDrinks.length + i]?.id;
+        return renderCard(s, id, null);
+      }).join('');
+
+      // Prior batches: render from DB records so already-set verdicts show as active.
+      const priorHtml = priorDrinks.length > 0
+        ? `<div class="session-divider">── earlier this session ──</div>` +
+          priorDrinks.map(d => renderCard(d, d.id, d.verdict)).join('')
+        : '';
+
+      document.getElementById('results').innerHTML = newHtml + priorHtml;
 
       document.querySelectorAll('.verdict-btn').forEach(btn => {
         btn.addEventListener('click', () => castVerdict(btn.dataset.drinkId, btn.dataset.verdict, btn));
@@ -653,7 +666,7 @@
     }
   }
 
-  function renderCard(s, drinkId) {
+  function renderCard(s, drinkId, activeVerdict = null) {
     const ings = s.ingredients.map(i => {
       const qty = i.quantity ? ` (${txt(i.quantity)})` : '';
       return `<li class="ing ${txt(i.source || 'missing')}">${txt(i.name)}${qty}</li>`;
@@ -662,11 +675,12 @@
       ? `<ol class="steps">${s.steps.map(t => `<li>${txt(t)}</li>`).join('')}</ol>`
       : '';
     const didStr = drinkId ? `data-drink-id="${txt(drinkId)}"` : '';
+    const av = activeVerdict;
     const verdictRow = `
       <div class="verdict-row">
-        <button class="verdict-btn liked" ${didStr} data-verdict="liked">👍 Liked</button>
-        <button class="verdict-btn neutral" ${didStr} data-verdict="neutral">😐 Neutral</button>
-        <button class="verdict-btn disliked" ${didStr} data-verdict="disliked">👎 Disliked</button>
+        <button class="verdict-btn liked${av === 'liked' ? ' active' : ''}" ${didStr} data-verdict="liked">👍 Liked</button>
+        <button class="verdict-btn neutral${av === 'neutral' ? ' active' : ''}" ${didStr} data-verdict="neutral">😐 Neutral</button>
+        <button class="verdict-btn disliked${av === 'disliked' ? ' active' : ''}" ${didStr} data-verdict="disliked">👎 Disliked</button>
       </div>`;
     return `
       <div class="card">

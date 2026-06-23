@@ -274,6 +274,34 @@ rather than overwriting, so the session total stays accurate.
       stats query returns correct aggregates; NULLs excluded from averages.
       **Verify:** `pytest -q` green.
 
+### P11 — In-session memory (LLM + UI)  ·  Status: done
+Goal: stop the LLM from repeating drinks already shown this session, and show all session drinks
+in the UI instead of replacing them on each suggest call.
+
+- [x] **P11.1 Schema** — add `SessionDrinkFeedback(name, verdict)` and two optional fields
+      (`already_suggested: list[str]`, `session_feedback: list[SessionDrinkFeedback]`) to
+      `RecommendRequest` in `recommender/schemas.py`. Defaults to `[]` so all existing callers work.
+      _Done._
+- [x] **P11.2 Prompt** — add two new blocks at the bottom of `build_context()` in
+      `recommender/context.py`, inside `<user_data>`:
+      "Drinks already suggested this session — do NOT suggest these again" and
+      "Feedback from this session" (non-neutral verdicts only).
+      _Done._
+- [x] **P11.3 Wire in main.py** — in `app/main.py`, move session get/create BEFORE the
+      `recommend()` call; fetch `db.list_session_drinks(session_id)` and populate
+      `req.already_suggested` and `req.session_feedback` before passing req to `recommend()`.
+      _Done._
+- [x] **P11.4 UI accumulation** — in `app/static/index.html`:
+      (a) Add `activeVerdict` param to `renderCard()` — pre-marks the active verdict button.
+      (b) After each suggest call, render ALL session drinks (new batch at top, prior batch below
+          a `──── earlier this session ────` divider using the already-fetched `sessionDrinks`).
+      (c) Add `.session-divider` CSS style.
+      (d) Remove the premature `results.innerHTML = ''` clear at the top of the submit handler.
+      _Done._
+- [x] **P11.5 Verify** — `pytest -q` green; manual test: two suggest calls in same session show
+      no duplicates and both batches visible; rated drink shows active verdict badge on redraw.
+      _91 tests pass; mock evals baseline holds (all assertions pass)._
+
 ### P5 — Observability / tracing  ·  Status: not started
 Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
 - [ ] **P5.1 Define a trace record** (dataclass): `ts, model, scenario_id, input_tokens, output_tokens,
