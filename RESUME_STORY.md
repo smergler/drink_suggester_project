@@ -283,6 +283,38 @@ RAG name accuracy recovered from 55% → 73% with the reframing. No-RAG improved
 
 ---
 
+## Judge calibration results (P2)
+
+Human labels (16 suggestions) vs LLM judge, keyed on `suggestion_hash` (SHA256[:8] of sorted ingredient names+sources — stable across renames, invalidates on recipe change):
+
+| Dimension | Agreement |
+|---|---|
+| `constraints_respected` | 80% (4/5 pairs) |
+| `name_accurate` | **56%** (9/16) — judge too lenient |
+| `occasion_fit` | MAE=0.62, exact 50% — you gave all 5s, judge more conservative |
+| `recipe_plausibility` | MAE=0.50, exact 69% — judge missed missing bitters/absinthe |
+| `companion_targeting` | 100% (1/1) |
+
+Key finding: `name_accurate` 56% agreement — the judge passed "Mezcal Negroni", "Bourbon Neat on the rocks", "Old Fashioned without bitters" as correct. Judge prompt was tightened post-calibration with explicit rules: substituting base spirit = false, missing canonical ingredients = false, rubric added to `recipe_plausibility`.
+
+**Interview line:** "I didn't trust the judge until I validated it. Calibration caught that it was 56% agreement on name accuracy — systematically too lenient on creative names borrowing classic labels. I tightened the prompt and re-ran."
+
+## Observability / tracing (P5)
+
+`evals/tracing.py` — `TraceRecord` dataclass (ts, model, scenario_id, input_tokens, output_tokens, latency_ms, call_type); `write()` appends JSONL non-fatally. `run_evals.py` gains `--trace [PATH]`. `evals/trace_summary.py` prints aggregates by model and call_type.
+
+Sample from a full judge run (14 scenarios, 22 suggestions):
+
+```
+36 calls  |  input: 33,234 tok  |  output: 8,457 tok  |  avg latency: 2,589ms
+
+By call type:
+  recommend   14 calls   18,466 in   6,395 out   4,403ms avg
+  judge       22 calls   14,768 in   2,062 out   1,435ms avg
+```
+
+Recommend calls are 3× slower and use 4× more output tokens than judge calls — useful for cost modeling if you ever scale to many users.
+
 ## Open decisions / next steps
 
 - [x] **Pantry boundary:** decided — honey/cinnamon stay as legitimate "grab these"

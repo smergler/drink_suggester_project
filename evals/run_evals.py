@@ -13,6 +13,7 @@ import argparse
 import hashlib
 import json
 import os
+import time
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -23,6 +24,7 @@ from evals.grounding import score
 from evals.judge import JudgeVerdict, judge_suggestion, summarize
 import evals.makeable as makeable_mod
 from evals.mock_responses import MOCK_RESPONSES
+from evals.tracing import DEFAULT_TRACE_PATH, TraceRecord, write as trace_write
 from recommender.llm import AnthropicClient, MockClient
 from recommender.recommender import recommend
 
@@ -53,6 +55,8 @@ def main() -> None:
     parser.add_argument("--save-verdicts", metavar="PATH", help="write per-suggestion judge verdicts to JSON")
     parser.add_argument("--save-suggestions", metavar="PATH", help="write full suggestion details + scenario context to JSON")
     parser.add_argument("--rag", action="store_true", help="enable retrieval augmentation (requires built index)")
+    parser.add_argument("--trace", metavar="PATH", nargs="?", const=str(DEFAULT_TRACE_PATH),
+                        help="append JSONL trace records per LLM call (default: evals/traces.jsonl)")
     args = parser.parse_args()
 
     if args.live:
@@ -87,7 +91,19 @@ def main() -> None:
         else:
             llm = MockClient(MOCK_RESPONSES, key=sc.id)
 
+        _t0 = time.perf_counter()
         rec = recommend(sc.request, sc.inventory, llm, use_retrieval=args.rag)
+        _elapsed_ms = int((time.perf_counter() - _t0) * 1000)
+        if args.trace and hasattr(llm, "last_usage") and llm.last_usage:
+            trace_write(TraceRecord(
+                ts=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                model=llm._model,
+                scenario_id=sc.id,
+                input_tokens=llm.last_usage.input_tokens,
+                output_tokens=llm.last_usage.output_tokens,
+                latency_ms=_elapsed_ms,
+                call_type="recommend",
+            ), path=Path(args.trace))
         report = score(rec.suggestions, sc.inventory)
 
         if args.save_suggestions:
@@ -149,8 +165,20 @@ def main() -> None:
 
         if args.live and args.judge:
             for s in rec.suggestions:
+                _jt0 = time.perf_counter()
                 verdict = judge_suggestion(s, sc.request, llm)
+                _jelapsed_ms = int((time.perf_counter() - _jt0) * 1000)
                 all_tagged.append(TaggedVerdict(sc.id, s.name, _suggestion_hash(s), verdict))
+                if args.trace and hasattr(llm, "last_usage") and llm.last_usage:
+                    trace_write(TraceRecord(
+                        ts=time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
+                        model=llm._model,
+                        scenario_id=sc.id,
+                        input_tokens=llm.last_usage.input_tokens,
+                        output_tokens=llm.last_usage.output_tokens,
+                        latency_ms=_jelapsed_ms,
+                        call_type="judge",
+                    ), path=Path(args.trace))
 
     rate = grounded / total if total else 0.0
     mk_uses_rate = mk_uses_inv / mk_total if mk_total else 0.0

@@ -21,12 +21,25 @@ from recommender.llm import LLMClient
 from recommender.schemas import RecommendRequest, Suggestion
 
 JUDGE_SYSTEM = """You are a meticulous cocktail judge. Given a drink suggestion and
-the user's request, score it. Be strict: if any stated constraint is violated,
-constraints_respected must be false. If the drink has a recognized classic name but
-its listed ingredients don't match that classic's canonical recipe (e.g. called a
-'Negroni' but contains bourbon instead of gin), set name_accurate to false. If the
-drink has an invented or creative name, set name_accurate to true unless the
-description explicitly claims it is a classic it clearly is not.
+the user's request, score it.
+
+CONSTRAINTS: If any stated constraint is violated, constraints_respected must be false.
+Sweet vermouth violates "nothing too sweet". A shaken drink violates "stirred only".
+
+NAME ACCURACY: A classic name belongs to a specific recipe. Set name_accurate to false if:
+- The base spirit differs from the canonical recipe (bourbon instead of gin = not a Negroni;
+  mezcal instead of tequila = not a Margarita). "Mezcal Negroni" is still false — it borrows
+  the Negroni name for a different base spirit.
+- A canonical ingredient is missing entirely (Old Fashioned without bitters = false;
+  Sazerac without absinthe AND Peychaud's = false).
+- The name claims it is a classic ("Negroni", "Manhattan", "Old Fashioned") but the recipe
+  does not match. Descriptive names like "Boulevardier", "Bourbon Smash", "Rye Sour" are
+  invented names — set name_accurate to true for those.
+
+RECIPE PLAUSIBILITY (1-5): Is this a real, correctly-constructed cocktail?
+- 5 = canonical technique, correct proportions, all expected components present
+- 3 = mostly right but missing a key component or has odd ratios
+- 1 = wouldn't work as written
 
 If companions are listed, score companion_targeting 1-5: does the suited_for list
 correctly match each companion's likes/dislikes? (5 = perfectly targeted, 1 = clearly

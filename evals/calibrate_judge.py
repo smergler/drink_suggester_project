@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 
 LABELS_PATH = Path("evals/judge_labels.json")
-VERDICTS_PATH = Path("evals/judge_verdicts.json")
+VERDICTS_PATH = Path("evals/judge_verdicts_calibration.json")
 
 BOOL_DIMS = ["constraints_respected", "name_accurate"]
 SCALE_DIMS = ["occasion_fit", "recipe_plausibility", "companion_targeting"]

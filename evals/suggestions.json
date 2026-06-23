@@ -1,63 +1,13 @@
 [
   {
-    "suggestion_hash": "acb9ae77",
+    "suggestion_hash": "8d47240a",
     "scenario_id": "classic_rich",
     "occasion": "dinner party",
     "mood": "spirit-forward",
     "constraints": [],
     "companions": [],
-    "name": "Negroni",
-    "description": "A classic spirit-forward aperitif with equal parts gin substitute\u2014here, mezcal's smoky complexity replaces gin\u2014balanced against Campari's bitter-sweet profile and sweet vermouth's richness. Stirred and served up with an orange twist.",
-    "ingredients": [
-      {
-        "name": "Del Maguey Vida Mezcal",
-        "quantity": "0.75 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Campari",
-        "quantity": "0.75 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Carpano Antica Sweet Vermouth",
-        "quantity": "0.75 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Angostura Bitters",
-        "quantity": "2 dashes",
-        "source": "inventory"
-      },
-      {
-        "name": "ice",
-        "quantity": null,
-        "source": "pantry"
-      },
-      {
-        "name": "orange",
-        "quantity": "1 twist",
-        "source": "perishable"
-      }
-    ],
-    "steps": [
-      "Add mezcal, Campari, and sweet vermouth to a mixing glass with ice",
-      "Stir for 10\u201315 seconds until well-chilled",
-      "Strain into a coupe or rocks glass over fresh ice",
-      "Express orange twist over the drink and drop in as garnish"
-    ],
-    "why": "Mezcal's earthy smoke plays beautifully against Campari's herbal bitterness, creating a sophisticated, spirit-forward drink that anchors a dinner party. The vermouth adds depth without sweetness dominating.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "617b62f5",
-    "scenario_id": "classic_rich",
-    "occasion": "dinner party",
-    "mood": "spirit-forward",
-    "constraints": [],
-    "companions": [],
-    "name": "Manhattan (Rye)",
-    "description": "A timeless spirit-forward classic built on rye whiskey's spicy backbone, softened by sweet vermouth and anchored with aromatic bitters. Stirred cold and served up with a cherry.",
+    "name": "Boulevardier",
+    "description": "A spirit-forward classic built on rye, Campari, and sweet vermouth\u2014bold, bittersweet, and perfectly balanced for a dinner party.",
     "ingredients": [
       {
         "name": "Rittenhouse Rye",
@@ -65,49 +15,6 @@
         "source": "inventory"
       },
       {
-        "name": "Carpano Antica Sweet Vermouth",
-        "quantity": "1 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Angostura Bitters",
-        "quantity": "2 dashes",
-        "source": "inventory"
-      },
-      {
-        "name": "ice",
-        "quantity": null,
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Add rye, sweet vermouth, and bitters to a mixing glass with ice",
-      "Stir for 10\u201315 seconds until well-chilled and diluted",
-      "Strain into a coupe or Nick & Nora glass",
-      "Garnish with a cherry (if available) or lemon twist"
-    ],
-    "why": "Rittenhouse rye's high rye content delivers spice and structure that shines in this canonical cocktail. The Carpano's vanilla and herbal notes complement the whiskey's character, making it an elegant, warming choice for dinner guests.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "68dbcbc4",
-    "scenario_id": "negroni_no_sweet",
-    "occasion": "aperitivo",
-    "mood": "bitter and bracing",
-    "constraints": [
-      "nothing too sweet",
-      "stirred only"
-    ],
-    "companions": [],
-    "name": "Negroni",
-    "description": "A classic aperitivo cocktail with equal parts gin substitute, Campari, and sweet vermouth, stirred and served up or over ice. This version uses mezcal for a smoky, bracing edge.",
-    "ingredients": [
-      {
-        "name": "Del Maguey Vida Mezcal",
-        "quantity": "0.75 oz",
-        "source": "inventory"
-      },
-      {
         "name": "Campari",
         "quantity": "0.75 oz",
         "source": "inventory"
@@ -126,236 +33,31 @@
         "name": "Ice",
         "quantity": null,
         "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1",
+        "source": "perishable"
       }
     ],
     "steps": [
-      "Add mezcal, Campari, sweet vermouth, and bitters to a mixing glass filled with ice",
+      "Add rye, Campari, sweet vermouth, and bitters to a mixing glass filled with ice",
       "Stir for 10\u201315 seconds until well-chilled",
-      "Strain into a coupe or serve over a large ice cube in a rocks glass",
-      "Express an orange twist over the drink if available"
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express orange peel oil over the drink and drop it in as garnish"
     ],
-    "why": "The Negroni is the quintessential bitter, bracing aperitivo. Mezcal replaces gin here, adding smoke and complexity while keeping the drink dry and spirit-forward. Campari's herbal bitterness and the vermouth's depth make this perfectly suited to aperitivo hour without any cloying sweetness.",
-    "suited_for": [
-      "me"
-    ]
-  },
-  {
-    "suggestion_hash": "c223a99a",
-    "scenario_id": "sparse_old_fashioned",
-    "occasion": "nightcap",
-    "mood": "simple and warming",
-    "constraints": [],
-    "companions": [],
-    "name": "Hot Toddy",
-    "description": "A warming, soothing nightcap of bourbon, honey, lemon, and hot water\u2014a timeless comfort drink perfect for winding down.",
-    "ingredients": [
-      {
-        "name": "Four Roses Small Batch",
-        "quantity": "2 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "honey",
-        "quantity": "1 tbsp",
-        "source": "perishable"
-      },
-      {
-        "name": "lemon juice",
-        "quantity": "0.5 oz",
-        "source": "perishable"
-      },
-      {
-        "name": "hot water",
-        "quantity": "4 oz",
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Warm a mug with hot water, then discard",
-      "Add honey and lemon juice to the mug",
-      "Pour in 2 oz Four Roses Small Batch",
-      "Top with 4 oz hot water and stir well",
-      "Optional: garnish with a lemon wheel or cinnamon stick"
-    ],
-    "why": "A Hot Toddy is the quintessential warming nightcap\u2014it's simple, requires only what you have on hand, and the bourbon's vanilla and caramel notes pair beautifully with honey and citrus. Perfect for relaxing before bed.",
+    "why": "A timeless aperitif cocktail that showcases your rye beautifully. The Campari and vermouth create complexity and depth\u2014ideal for a dinner party where guests appreciate spirit-forward drinks.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "67f1cbf3",
-    "scenario_id": "tiki_adversarial",
-    "occasion": "tiki beach party",
-    "mood": "tropical and fruity",
+    "suggestion_hash": "e78a65a4",
+    "scenario_id": "classic_rich",
+    "occasion": "dinner party",
+    "mood": "spirit-forward",
     "constraints": [],
     "companions": [],
-    "name": "Tropical Bourbon Punch",
-    "description": "A refreshing, fruity tiki-style punch built on bourbon with bright citrus and tropical fruit juices, perfect for a beach party atmosphere.",
-    "ingredients": [
-      {
-        "name": "Four Roses Small Batch",
-        "quantity": "2 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Pineapple juice",
-        "quantity": "3 oz",
-        "source": "perishable"
-      },
-      {
-        "name": "Orange juice",
-        "quantity": "2 oz",
-        "source": "perishable"
-      },
-      {
-        "name": "Fresh lime juice",
-        "quantity": "0.75 oz",
-        "source": "perishable"
-      },
-      {
-        "name": "Simple syrup",
-        "quantity": "0.5 oz",
-        "source": "pantry"
-      },
-      {
-        "name": "Ice",
-        "quantity": "1 cup",
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Fill a tiki mug or tall glass with crushed ice",
-      "Pour the Four Roses Small Batch over the ice",
-      "Add pineapple juice, orange juice, and fresh lime juice",
-      "Top with simple syrup and stir well",
-      "Garnish with a pineapple wedge and cherry if available"
-    ],
-    "why": "This drink maximizes your bourbon while delivering the tropical, fruity vibe you're after. The citrus and pineapple juice complement Four Roses' vanilla and spice notes beautifully, and it's easy to batch for a beach party crowd.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "e7512701",
-    "scenario_id": "impossible_count",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Old Fashioned",
-    "description": "A timeless bourbon cocktail with deep caramel and subtle spice notes, built on the foundation of quality whiskey.",
-    "ingredients": [
-      {
-        "name": "Four Roses Small Batch",
-        "quantity": "2 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Sugar",
-        "quantity": "1 tsp",
-        "source": "pantry"
-      },
-      {
-        "name": "Water",
-        "quantity": "1 tsp",
-        "source": "pantry"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Place sugar and water in a rocks glass",
-      "Stir until sugar dissolves",
-      "Add a large ice cube or several smaller cubes",
-      "Pour in 2 oz Four Roses Small Batch",
-      "Stir gently for 10 seconds"
-    ],
-    "why": "This classic requires only what you have on hand. Four Roses Small Batch's balanced vanilla and spice profile shines in this simple format.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "3236453d",
-    "scenario_id": "impossible_count",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Bourbon Neat",
-    "description": "A pure, unadulterated pour that lets the whiskey speak for itself\u2014perfect for savoring the craftsmanship.",
-    "ingredients": [
-      {
-        "name": "Four Roses Small Batch",
-        "quantity": "2 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Ice",
-        "quantity": "optional",
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Pour 2 oz Four Roses Small Batch into a rocks glass",
-      "Add ice if desired, or drink at room temperature",
-      "Sip slowly and observe the flavors evolving"
-    ],
-    "why": "Sometimes the best drink is the simplest. Four Roses Small Batch is excellent enough to enjoy on its own, revealing notes of caramel, oak, and floral complexity.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "f9c13b22",
-    "scenario_id": "impossible_count",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Bourbon & Water",
-    "description": "A gentle, hydrating serve that opens up the whiskey's subtle flavors while keeping you refreshed.",
-    "ingredients": [
-      {
-        "name": "Four Roses Small Batch",
-        "quantity": "1.5 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Water",
-        "quantity": "1.5 oz",
-        "source": "pantry"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Fill a rocks glass with ice",
-      "Pour in 1.5 oz Four Roses Small Batch",
-      "Top with 1.5 oz water",
-      "Stir briefly and enjoy"
-    ],
-    "why": "Adding water to bourbon is a time-honored practice that releases aromatic compounds and makes the whiskey more approachable for a casual evening.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "8c70d6b4",
-    "scenario_id": "companion_mezcal",
-    "occasion": "date night",
-    "mood": "smoky",
-    "constraints": [],
-    "companions": [
-      {
-        "name": "wife",
-        "likes": [
-          "mezcal",
-          "spirit-forward"
-        ],
-        "dislikes": [
-          "sweet"
-        ]
-      }
-    ],
-    "name": "Smoky Negroni",
-    "description": "A spirit-forward twist on the classic Negroni, swapping traditional gin for mezcal to create a deeply smoky, complex aperitif with bitter and herbal notes. Stirred until silky and served up or on the rocks.",
+    "name": "Mezcal Negroni",
+    "description": "A smoky, earthy take on the Negroni using Del Maguey Vida mezcal instead of gin, balanced with Campari and dry vermouth.",
     "ingredients": [
       {
         "name": "Del Maguey Vida Mezcal",
@@ -374,7 +76,55 @@
       },
       {
         "name": "Angostura Bitters",
-        "quantity": "2 dashes",
+        "quantity": "1 dash",
+        "source": "inventory"
+      },
+      {
+        "name": "Ice",
+        "quantity": null,
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Add mezcal, Campari, dry vermouth, and bitters to a mixing glass filled with ice",
+      "Stir for 10\u201315 seconds until well-chilled",
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express orange peel oil over the drink and drop it in as garnish"
+    ],
+    "why": "The mezcal's smoke and minerality play beautifully against Campari's bitter-sweet profile and the dry vermouth's herbal notes. A sophisticated, conversation-starting drink that feels special without being fussy.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "aa0543e3",
+    "scenario_id": "negroni_no_sweet",
+    "occasion": "aperitivo",
+    "mood": "bitter and bracing",
+    "constraints": [
+      "nothing too sweet",
+      "stirred only"
+    ],
+    "companions": [],
+    "name": "Mezcal Negroni",
+    "description": "A bracing, bitter aperitivo built on smoky mezcal, Campari's herbal bite, and dry vermouth\u2014stirred ice-cold and served up. The smoke plays beautifully against the camphor and citrus notes.",
+    "ingredients": [
+      {
+        "name": "Del Maguey Vida Mezcal",
+        "quantity": "0.75 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Campari",
+        "quantity": "0.75 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Dolin Dry Vermouth",
+        "quantity": "0.75 oz",
         "source": "inventory"
       },
       {
@@ -384,25 +134,306 @@
       }
     ],
     "steps": [
-      "Add mezcal, Campari, dry vermouth, and Angostura bitters to a mixing glass",
-      "Fill with ice and stir for 30 seconds until well-chilled",
-      "Strain into a coupe glass or over fresh ice in a rocks glass",
-      "Express an orange twist over the drink and drop it in as garnish"
+      "Add mezcal, Campari, and dry vermouth to a mixing glass filled with ice",
+      "Stir for 10\u201312 seconds until well-chilled",
+      "Strain into a coupe or Nick & Nora glass",
+      "Optional: express a lemon twist over the surface and discard, or add as garnish"
     ],
-    "why": "This drink plays directly to your wife's preferences\u2014mezcal-forward, spirit-driven, and bone-dry with no added sweetness. The smoke from the mezcal pairs beautifully with Campari's bitter complexity and the herbal backbone of dry vermouth. It's an elegant, intimate aperitif perfect for a date night.",
+    "why": "This hits every mark: bitter, bracing, spirit-forward, and perfectly balanced without sweetness. The mezcal's smoke and minerality elevate the classic formula, and stirring keeps it elegant and aperitivo-appropriate. All bottles are on hand.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "518cd9b2",
+    "scenario_id": "sparse_old_fashioned",
+    "occasion": "nightcap",
+    "mood": "simple and warming",
+    "constraints": [],
+    "companions": [],
+    "name": "Bourbon & Orange Nightcap",
+    "description": "A warming, simple drink that lets the bourbon shine with bright citrus notes\u2014perfect for unwinding before bed.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Orange juice",
+        "quantity": "0.5 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Water",
+        "quantity": "0.5 oz",
+        "source": "pantry"
+      },
+      {
+        "name": "Sugar",
+        "quantity": "0.5 tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Gently warm a rocks glass with hot water, then empty it",
+      "Add sugar and a splash of water to the glass and stir to dissolve",
+      "Pour in the bourbon and orange juice",
+      "Stir well",
+      "Express the orange peel oils over the drink and drop it in as garnish"
+    ],
+    "why": "Four Roses Small Batch has a smooth, slightly fruity profile that pairs beautifully with fresh orange. This simple format keeps the focus on the bourbon while the citrus and warmth make it an ideal nightcap\u2014no complex techniques or missing ingredients required.",
     "suited_for": [
+      "me"
+    ]
+  },
+  {
+    "suggestion_hash": "28c12074",
+    "scenario_id": "tiki_adversarial",
+    "occasion": "tiki beach party",
+    "mood": "tropical and fruity",
+    "constraints": [],
+    "companions": [],
+    "name": "Tropical Bourbon Punch",
+    "description": "A fruity, refreshing tiki-style punch built on Four Roses Small Batch bourbon with tropical juices and a touch of sweetness, perfect for a beach party.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Pineapple juice",
+        "quantity": "3 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Orange juice",
+        "quantity": "2 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Lime juice",
+        "quantity": "0.5 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Simple syrup",
+        "quantity": "0.5 oz",
+        "source": "pantry"
+      },
+      {
+        "name": "Ice",
+        "quantity": "1 cup",
+        "source": "pantry"
+      }
+    ],
+    "steps": [
+      "Fill a tiki mug or highball glass with ice",
+      "Pour 2 oz Four Roses Small Batch over the ice",
+      "Add 3 oz pineapple juice and 2 oz orange juice",
+      "Squeeze in 0.5 oz fresh lime juice",
+      "Stir in 0.5 oz simple syrup",
+      "Stir well to combine",
+      "Garnish with a pineapple wedge or orange slice if available"
+    ],
+    "why": "Four Roses Small Batch is a smooth, approachable bourbon with subtle fruit notes that pairs beautifully with tropical juices. This punch is easy to batch for a party, refreshing in the heat, and captures the tiki spirit without requiring specialty liqueurs you don't have on hand.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "18256ae4",
+    "scenario_id": "impossible_count",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Four Roses Old Fashioned",
+    "description": "A timeless whiskey cocktail with bourbon, sugar, bitters, and a twist of citrus\u2014the gold standard for sipping bourbon neat or on the rocks.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Angostura bitters",
+        "quantity": "2 dashes",
+        "source": "missing"
+      },
+      {
+        "name": "Sugar",
+        "quantity": "1 tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Water",
+        "quantity": "splash",
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Place sugar and bitters in a rocks glass",
+      "Add a splash of water and stir to dissolve",
+      "Add ice",
+      "Pour in 2 oz Four Roses Small Batch",
+      "Stir well",
+      "Express orange peel oil over the drink and drop it in as garnish"
+    ],
+    "why": "The Four Roses is smooth and approachable\u2014perfect for a casual evening. An Old Fashioned lets the bourbon shine without fuss.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "d303cb86",
+    "scenario_id": "impossible_count",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Bourbon Sour",
+    "description": "A balanced whiskey sour with bourbon, fresh lemon juice, and a touch of sweetness\u2014bright, refreshing, and easy to make.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Lemon juice",
+        "quantity": "0.75 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Simple syrup",
+        "quantity": "0.5 oz",
+        "source": "pantry"
+      },
+      {
+        "name": "Ice",
+        "quantity": "as needed",
+        "source": "pantry"
+      }
+    ],
+    "steps": [
+      "Fill a shaker with ice",
+      "Add 2 oz Four Roses Small Batch, 0.75 oz fresh lemon juice, and 0.5 oz simple syrup",
+      "Shake vigorously for 10 seconds",
+      "Strain into a rocks glass filled with fresh ice",
+      "Serve immediately"
+    ],
+    "why": "A classic sour is versatile and crowd-pleasing. The Four Roses' vanilla notes complement the citrus beautifully, and it's quick to make.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "45167494",
+    "scenario_id": "impossible_count",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Bourbon Neat",
+    "description": "Four Roses Small Batch served at room temperature or with a single large ice cube\u2014the purest way to experience the bourbon's character.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Water",
+        "quantity": "splash (optional)",
+        "source": "pantry"
+      }
+    ],
+    "steps": [
+      "Pour 2 oz Four Roses Small Batch into a rocks glass",
+      "Add a single large ice cube or serve at room temperature",
+      "Optional: add a splash of water to open up the flavors",
+      "Sip and enjoy"
+    ],
+    "why": "Sometimes the best drink is the simplest. Four Roses Small Batch is well-balanced and approachable on its own\u2014perfect for a relaxed evening when you want to taste what you're drinking.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "e78a65a4",
+    "scenario_id": "companion_mezcal",
+    "occasion": "date night",
+    "mood": "smoky",
+    "constraints": [],
+    "companions": [
+      {
+        "name": "wife",
+        "likes": [
+          "mezcal",
+          "spirit-forward"
+        ],
+        "dislikes": [
+          "sweet"
+        ]
+      }
+    ],
+    "name": "Mezcal Negroni",
+    "description": "A smoky, spirit-forward take on the classic Negroni, built with Del Maguey Vida mezcal for earthy complexity, Campari for bitter-herbal notes, and dry vermouth for structure. Perfectly balanced and intensely aromatic.",
+    "ingredients": [
+      {
+        "name": "Del Maguey Vida Mezcal",
+        "quantity": "0.75 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Campari",
+        "quantity": "0.75 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Dolin Dry Vermouth",
+        "quantity": "0.75 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Angostura Bitters",
+        "quantity": "2 dashes",
+        "source": "inventory"
+      },
+      {
+        "name": "Ice",
+        "quantity": null,
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": null,
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Add mezcal, Campari, dry vermouth, and bitters to a mixing glass filled with ice",
+      "Stir for 10\u201312 seconds until well-chilled",
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express orange peel oils over the drink and drop as garnish"
+    ],
+    "why": "This drink plays directly to your wife's preferences: mezcal-forward, spirit-driven, and built with dry vermouth to avoid sweetness. The smoke from the mezcal pairs beautifully with Campari's bitter complexity, creating an intimate, sophisticated date-night sipper with real depth.",
+    "suited_for": [
+      "me",
       "wife"
     ]
   },
   {
-    "suggestion_hash": "435e3c4c",
+    "suggestion_hash": "65abe65c",
     "scenario_id": "margarita_no_tequila",
     "occasion": "taco night",
     "mood": "bright and citrusy",
     "constraints": [],
     "companions": [],
     "name": "Mezcal Paloma",
-    "description": "A bright, citrusy tequila-style cocktail built on smoky mezcal with fresh lime and grapefruit, perfect for taco night.",
+    "description": "A bright, citrusy tequila-style drink built on smoky mezcal with fresh lime juice, grapefruit, and a touch of orange liqueur for balance\u2014perfect for taco night.",
     "ingredients": [
       {
         "name": "Del Maguey Vida Mezcal",
@@ -430,33 +461,44 @@
         "source": "pantry"
       },
       {
-        "name": "Ice",
-        "quantity": null,
+        "name": "Salt",
+        "quantity": "for rim",
         "source": "pantry"
       }
     ],
     "steps": [
-      "Add mezcal, Cointreau, lime juice, grapefruit juice, and simple syrup to a cocktail shaker with ice",
-      "Shake vigorously for 10\u201312 seconds",
-      "Strain into a salt-rimmed glass filled with fresh ice",
+      "Rim a highball glass with salt",
+      "Fill glass with ice",
+      "Pour mezcal, Cointreau, lime juice, grapefruit juice, and simple syrup into the glass",
+      "Stir well",
       "Garnish with a lime wheel"
     ],
-    "why": "Mezcal's smoky character pairs beautifully with the savory, spiced flavors of tacos, while the bright citrus and Cointreau's orange notes keep it refreshing and festive. This hits your bright and citrusy vibe perfectly.",
+    "why": "Mezcal's smokiness pairs beautifully with tacos, while the bright citrus (lime and grapefruit) keeps the drink refreshing and summery. Cointreau adds subtle orange notes without overpowering the fresh flavors. This is a natural fit for the occasion and your bright, citrusy mood.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "0eaae409",
+    "suggestion_hash": "a98fecad",
     "scenario_id": "movie_night",
     "occasion": "movie night",
     "mood": "cozy",
     "constraints": [],
     "companions": [],
-    "name": "Sazerac",
-    "description": "A classic New Orleans cocktail with rye whiskey, absinthe rinse, and aromatic bitters\u2014bold, warming, and perfect for settling in during a cozy movie night.",
+    "name": "Boulevardier",
+    "description": "A rich, warming cocktail with bourbon, sweet vermouth, and Campari\u2014like a cozy negroni with deeper, more complex flavors. Perfect for settling in with a movie.",
     "ingredients": [
       {
-        "name": "Rittenhouse Rye",
+        "name": "Four Roses Small Batch",
         "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Carpano Antica Sweet Vermouth",
+        "quantity": "1 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Campari",
+        "quantity": "1 oz",
         "source": "inventory"
       },
       {
@@ -465,35 +507,27 @@
         "source": "inventory"
       },
       {
-        "name": "Sugar",
-        "quantity": "1 tsp",
+        "name": "Ice",
+        "quantity": null,
         "source": "pantry"
       },
       {
-        "name": "Water",
-        "quantity": "1 tsp",
-        "source": "pantry"
-      },
-      {
-        "name": "Lemon peel",
+        "name": "Orange peel",
         "quantity": "1",
         "source": "perishable"
       }
     ],
     "steps": [
-      "Rinse a rocks glass with absinthe (or skip if unavailable) and discard excess",
-      "Muddle sugar and water in a mixing glass",
-      "Add rye and bitters, stir with ice until chilled",
-      "Strain into the prepared glass over fresh ice",
-      "Express lemon peel oils over the drink and drop in as garnish"
+      "Add bourbon, sweet vermouth, Campari, and bitters to a mixing glass filled with ice",
+      "Stir for about 30 seconds until well-chilled",
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express the orange peel oils over the drink and drop it in as garnish"
     ],
-    "why": "The Sazerac is quintessentially cozy\u2014warming rye, aromatic bitters, and a citrus finish make it ideal for movie night. You have everything needed without substitutions.",
-    "suited_for": [
-      "me"
-    ]
+    "why": "This is the ultimate cozy cocktail\u2014spirit-forward, warming, and complex without being fussy. It's made entirely from bottles you own, requires no special ingredients, and the rich caramel and bitter-sweet notes are perfect for movie night relaxation.",
+    "suited_for": []
   },
   {
-    "suggestion_hash": "24e9040b",
+    "suggestion_hash": "e01e9301",
     "scenario_id": "negroni_no_gin",
     "occasion": "aperitivo",
     "mood": "classic and bitter",
@@ -501,13 +535,13 @@
       "make a Negroni"
     ],
     "companions": [],
-    "name": "Negroni",
-    "description": "A classic Italian aperitivo cocktail with equal parts gin, Campari, and sweet vermouth, stirred with ice and garnished with an orange twist. Bittersweet, spirit-forward, and perfectly balanced.",
+    "name": "Boulevardier",
+    "description": "A classic aperitivo cocktail with bourbon, Campari, and sweet vermouth\u2014rich, bitter, and perfectly balanced for the pre-dinner hour.",
     "ingredients": [
       {
-        "name": "gin",
+        "name": "Four Roses Small Batch",
         "quantity": "1 oz",
-        "source": "missing"
+        "source": "inventory"
       },
       {
         "name": "Campari",
@@ -525,22 +559,22 @@
         "source": "pantry"
       },
       {
-        "name": "orange",
-        "quantity": "1 twist",
+        "name": "orange peel",
+        "quantity": "1",
         "source": "perishable"
       }
     ],
     "steps": [
-      "Add 1 oz gin, 1 oz Campari, and 1 oz Carpano Antica to a mixing glass filled with ice",
+      "Add bourbon, Campari, and sweet vermouth to a mixing glass with ice",
       "Stir for 10\u201315 seconds until well-chilled",
-      "Strain into a rocks glass over fresh ice",
-      "Express an orange twist over the drink and drop it in as garnish"
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express the orange peel oils over the drink and use as garnish"
     ],
-    "why": "You have two of the three essential Negroni ingredients\u2014Campari and sweet vermouth\u2014both perfect for this bitter, classic aperitivo. You'll need to acquire gin to complete the drink, but once you do, this is the quintessential pre-dinner cocktail that embodies the mood you're after.",
+    "why": "You don't have gin, so a true Negroni isn't possible\u2014but your bourbon, Campari, and vermouth make a Boulevardier, which is equally classic, equally bitter, and perfectly suited to aperitivo. It's a sophisticated, spirit-forward drink that showcases all three bottles you own.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "cb6147cc",
+    "suggestion_hash": "08b03fcd",
     "scenario_id": "sazerac_no_peychauds",
     "occasion": "nightcap",
     "mood": "classic",
@@ -549,7 +583,7 @@
     ],
     "companions": [],
     "name": "Sazerac",
-    "description": "A New Orleans classic rye whiskey cocktail with a rinse of absinthe, balanced with Peychaud's bitters and a touch of sugar. Traditionally served in a chilled glass with a lemon twist.",
+    "description": "A classic New Orleans rye whiskey cocktail with a rinse of absinthe, balanced with sugar and Angostura bitters for a bold, aromatic nightcap.",
     "ingredients": [
       {
         "name": "Rittenhouse Rye",
@@ -557,13 +591,174 @@
         "source": "inventory"
       },
       {
-        "name": "Peychaud's Bitters",
-        "quantity": "3 dashes",
+        "name": "Angostura Bitters",
+        "quantity": "2 dashes",
+        "source": "inventory"
+      },
+      {
+        "name": "Sugar",
+        "quantity": "1 tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Water",
+        "quantity": "\u00bc oz",
+        "source": "pantry"
+      },
+      {
+        "name": "Absinthe",
+        "quantity": "\u00bc oz rinse",
+        "source": "missing"
+      },
+      {
+        "name": "Ice",
+        "quantity": "as needed",
+        "source": "pantry"
+      },
+      {
+        "name": "Lemon peel",
+        "quantity": "1",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Chill a rocks glass with ice and water, then discard and rinse with absinthe",
+      "In a mixing glass, muddle sugar with water and Angostura bitters",
+      "Add Rittenhouse Rye and ice, stir well for 30 seconds",
+      "Strain into the absinthe-rinsed glass",
+      "Express lemon peel oils over the drink and serve"
+    ],
+    "why": "You have the two essential spirits (rye and bitters) for an authentic Sazerac. The drink requires absinthe for its signature rinse\u2014a specialty bottle worth acquiring for this classic.",
+    "suited_for": [
+      "me"
+    ]
+  },
+  {
+    "suggestion_hash": "16fc2e79",
+    "scenario_id": "mai_tai_bourbon_only",
+    "occasion": "beach party",
+    "mood": "tropical",
+    "constraints": [
+      "make a Mai Tai"
+    ],
+    "companions": [],
+    "name": "Mai Tai",
+    "description": "A classic tropical rum cocktail with a perfect balance of sweet, tart, and complex flavors. This version adapts the traditional recipe using your bourbon as the base spirit, creating a warm, oaky take on the iconic drink.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "1 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Lime juice",
+        "quantity": "0.5 oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Simple syrup",
+        "quantity": "0.5 oz",
+        "source": "pantry"
+      },
+      {
+        "name": "Orgeat syrup",
+        "quantity": "0.25 oz",
+        "source": "missing"
+      },
+      {
+        "name": "Orange cura\u00e7ao",
+        "quantity": "0.25 oz",
+        "source": "missing"
+      },
+      {
+        "name": "Ice",
+        "quantity": "1 cup",
+        "source": "pantry"
+      }
+    ],
+    "steps": [
+      "Add bourbon, lime juice, simple syrup, orgeat, and orange cura\u00e7ao to a cocktail shaker filled with ice",
+      "Shake vigorously for 10-12 seconds",
+      "Strain into a rocks glass filled with crushed ice",
+      "Garnish with a lime wheel and mint sprig"
+    ],
+    "why": "A Mai Tai traditionally requires light and dark rum, orgeat, and cura\u00e7ao\u2014bottles you don't currently own. Your Four Roses bourbon can substitute as the base spirit, though you'll need to source the orgeat and cura\u00e7ao to complete this classic. The result is a bourbon-forward tropical drink perfect for a beach party vibe.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "c993e75c",
+    "scenario_id": "high_count_pad",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Four Roses Old Fashioned",
+    "description": "A classic whiskey cocktail with bourbon, sugar, bitters, and a twist of citrus. Stirred down and served over ice.",
+    "ingredients": [
+      {
+        "name": "Four Roses Small Batch",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Angostura bitters",
+        "quantity": "2 dashes",
+        "source": "missing"
+      },
+      {
+        "name": "Sugar",
+        "quantity": "1 tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Water",
+        "quantity": "1 tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Ice",
+        "quantity": "1 large cube or several small",
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1 twist",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Place sugar and water in a rocks glass",
+      "Add bitters and stir to dissolve",
+      "Add bourbon and stir",
+      "Add ice",
+      "Express orange peel oils over the drink and drop in as garnish"
+    ],
+    "why": "Four Roses Small Batch is perfect for a classic Old Fashioned\u2014smooth, approachable, and lets the spirit shine. This is the gold standard whiskey cocktail for a relaxing evening.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "5d20b459",
+    "scenario_id": "high_count_pad",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Rittenhouse Sazerac",
+    "description": "A New Orleans classic built on rye whiskey, absinthe rinse, and Peychaud's bitters with a lemon twist.",
+    "ingredients": [
+      {
+        "name": "Rittenhouse Rye",
+        "quantity": "2 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Peychaud's bitters",
+        "quantity": "1 dash",
         "source": "missing"
       },
       {
         "name": "Absinthe",
-        "quantity": "\u00bc oz (rinse)",
+        "quantity": "\u00bc oz rinse",
         "source": "missing"
       },
       {
@@ -573,100 +768,84 @@
       },
       {
         "name": "Water",
-        "quantity": "\u00bc oz",
+        "quantity": "\u00bd tsp",
+        "source": "pantry"
+      },
+      {
+        "name": "Ice",
+        "quantity": "for stirring",
         "source": "pantry"
       },
       {
         "name": "Lemon peel",
-        "quantity": "1",
+        "quantity": "1 twist",
         "source": "perishable"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
       }
     ],
     "steps": [
-      "Chill a rocks glass with ice and water, then discard",
-      "Rinse the glass with absinthe, coating the interior",
-      "In a mixing glass, combine rye, Peychaud's bitters, sugar, and water",
-      "Stir with ice until well-chilled",
+      "Rinse a rocks glass with absinthe and discard excess",
+      "In a mixing glass, combine rye, bitters, sugar, and water with ice",
+      "Stir for 10 seconds",
       "Strain into the absinthe-rinsed glass",
-      "Express lemon peel oils over the drink and drop as garnish"
+      "Express lemon peel and drop in"
     ],
-    "why": "You have the foundational spirit (Rittenhouse Rye), but the Sazerac requires two specialty bottles\u2014Peychaud's Bitters and absinthe\u2014that aren't in your current collection. Angostura Bitters won't substitute authentically. This is the drink you've requested, but you'll need to acquire those two missing ingredients to make it properly.",
-    "suited_for": [
-      "me"
-    ]
-  },
-  {
-    "suggestion_hash": "5670fbb7",
-    "scenario_id": "mai_tai_bourbon_only",
-    "occasion": "beach party",
-    "mood": "tropical",
-    "constraints": [
-      "make a Mai Tai"
-    ],
-    "companions": [],
-    "name": "Mai Tai",
-    "description": "A classic tropical rum cocktail with a perfect balance of sweet, tart, and complex rum flavors, finished with a float of dark rum for depth.",
-    "ingredients": [
-      {
-        "name": "Light rum",
-        "quantity": "1 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Dark rum",
-        "quantity": "0.5 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Cura\u00e7ao",
-        "quantity": "0.5 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Orgeat syrup",
-        "quantity": "0.5 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Fresh lime juice",
-        "quantity": "0.75 oz",
-        "source": "perishable"
-      },
-      {
-        "name": "Simple syrup",
-        "quantity": "0.25 oz",
-        "source": "pantry"
-      },
-      {
-        "name": "Ice",
-        "quantity": null,
-        "source": "pantry"
-      }
-    ],
-    "steps": [
-      "Add light rum, dark rum, Cura\u00e7ao, orgeat syrup, fresh lime juice, and simple syrup to a cocktail shaker with ice",
-      "Shake vigorously for 10-12 seconds",
-      "Strain into a rocks glass filled with crushed ice",
-      "Float 0.5 oz of dark rum on top by pouring slowly over the back of a bar spoon",
-      "Garnish with a lime wheel and mint sprig"
-    ],
-    "why": "The Mai Tai is the quintessential tropical beach party cocktail\u2014it's vibrant, refreshing, and instantly evokes island vibes. However, you'll need to acquire light rum, dark rum, Cura\u00e7ao, and orgeat syrup, as your current inventory only contains bourbon.",
+    "why": "Rittenhouse Rye is a high-proof, spicy rye that shines in this bold New Orleans drink. The Sazerac is sophisticated and warming\u2014perfect for a casual evening that feels special.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "81f7faeb",
+    "suggestion_hash": "a0b648b3",
     "scenario_id": "high_count_pad",
     "occasion": "casual evening",
     "mood": "surprise me",
     "constraints": [],
     "companions": [],
-    "name": "Old Fashioned",
-    "description": "A timeless bourbon cocktail with deep caramel and spice notes, stirred down and served over ice with a citrus twist.",
+    "name": "Mezcal Negroni",
+    "description": "A smoky twist on the classic Negroni, swapping gin for mezcal. Bitter, herbal, and complex with a smoky edge.",
+    "ingredients": [
+      {
+        "name": "Del Maguey Vida Mezcal",
+        "quantity": "1 oz",
+        "source": "inventory"
+      },
+      {
+        "name": "Campari",
+        "quantity": "1 oz",
+        "source": "missing"
+      },
+      {
+        "name": "Sweet vermouth",
+        "quantity": "1 oz",
+        "source": "missing"
+      },
+      {
+        "name": "Ice",
+        "quantity": "for stirring",
+        "source": "pantry"
+      },
+      {
+        "name": "Orange peel",
+        "quantity": "1 twist",
+        "source": "perishable"
+      }
+    ],
+    "steps": [
+      "Add mezcal, Campari, and sweet vermouth to a mixing glass with ice",
+      "Stir for 10 seconds",
+      "Strain into a rocks glass over fresh ice",
+      "Express orange peel and drop in as garnish"
+    ],
+    "why": "Del Maguey Vida's bright, vegetal mezcal character plays beautifully against Campari's bitterness. This is a sophisticated sipper that surprises with smoke and complexity.",
+    "suited_for": []
+  },
+  {
+    "suggestion_hash": "1f2cdb10",
+    "scenario_id": "high_count_pad",
+    "occasion": "casual evening",
+    "mood": "surprise me",
+    "constraints": [],
+    "companions": [],
+    "name": "Four Roses Whiskey Smash",
+    "description": "A refreshing bourbon cocktail with citrus and mint. Shaken and served up or over ice.",
     "ingredients": [
       {
         "name": "Four Roses Small Batch",
@@ -674,44 +853,44 @@
         "source": "inventory"
       },
       {
-        "name": "Sugar",
-        "quantity": "1 tsp",
+        "name": "Lemon juice",
+        "quantity": "\u00be oz",
+        "source": "perishable"
+      },
+      {
+        "name": "Simple syrup",
+        "quantity": "\u00bd oz",
         "source": "pantry"
       },
       {
-        "name": "Water",
-        "quantity": "1 tsp",
-        "source": "pantry"
+        "name": "Fresh mint",
+        "quantity": "6-8 leaves",
+        "source": "perishable"
       },
       {
         "name": "Ice",
-        "quantity": "as needed",
+        "quantity": "for shaking",
         "source": "pantry"
-      },
-      {
-        "name": "Orange peel",
-        "quantity": "1",
-        "source": "perishable"
       }
     ],
     "steps": [
-      "Muddle sugar and water in a rocks glass",
-      "Add bourbon and stir",
-      "Fill glass with ice",
-      "Express orange peel oils over the drink and drop in as garnish"
+      "Add bourbon, lemon juice, simple syrup, and mint to a cocktail shaker with ice",
+      "Shake vigorously for 10 seconds",
+      "Strain into a coupe glass or over fresh ice in a rocks glass",
+      "Garnish with a mint sprig"
     ],
-    "why": "A perfect showcase for Four Roses' smooth, floral bourbon character. Requires only pantry staples and a citrus peel you likely have.",
+    "why": "A bright, herbaceous take on bourbon that's approachable and delicious. The mint and citrus make it feel summery and fun\u2014a great surprise for a casual evening.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "88615899",
+    "suggestion_hash": "e363d9f6",
     "scenario_id": "high_count_pad",
     "occasion": "casual evening",
     "mood": "surprise me",
     "constraints": [],
     "companions": [],
-    "name": "Sazerac-Style Rye",
-    "description": "A spicy, herbaceous rye cocktail with absinthe rinse and Peychaud's bitters\u2014a New Orleans classic adapted to what you have.",
+    "name": "Rittenhouse Sazerac-Style Sidecar",
+    "description": "A rye-based sour with citrus and a touch of sweetness, shaken and served up.",
     "ingredients": [
       {
         "name": "Rittenhouse Rye",
@@ -719,177 +898,32 @@
         "source": "inventory"
       },
       {
-        "name": "Simple syrup",
-        "quantity": "0.5 oz",
-        "source": "pantry"
-      },
-      {
-        "name": "Peychaud's bitters",
-        "quantity": "3 dashes",
-        "source": "missing"
-      },
-      {
-        "name": "Absinthe or pastis",
-        "quantity": "rinse",
-        "source": "missing"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
-      },
-      {
-        "name": "Lemon peel",
-        "quantity": "1",
-        "source": "perishable"
-      }
-    ],
-    "steps": [
-      "Rinse a rocks glass with absinthe and discard excess",
-      "Add rye, simple syrup, and bitters to a mixing glass with ice",
-      "Stir and strain into the prepared glass",
-      "Express lemon peel and drop in"
-    ],
-    "why": "Rittenhouse rye's high rye content shines in this bold, spirit-forward drink. You'll need specialty bitters and absinthe to complete it properly.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "f971faa2",
-    "scenario_id": "high_count_pad",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Mezcal Margarita",
-    "description": "A smoky, complex take on the classic with Del Maguey's earthy mezcal, lime, and a touch of sweetness.",
-    "ingredients": [
-      {
-        "name": "Del Maguey Vida Mezcal",
-        "quantity": "2 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Lime juice",
-        "quantity": "1 oz",
+        "name": "Lemon juice",
+        "quantity": "\u00be oz",
         "source": "perishable"
       },
       {
         "name": "Simple syrup",
-        "quantity": "0.75 oz",
-        "source": "pantry"
-      },
-      {
-        "name": "Salt",
-        "quantity": "for rim",
+        "quantity": "\u00bd oz",
         "source": "pantry"
       },
       {
         "name": "Ice",
-        "quantity": "as needed",
+        "quantity": "for shaking",
         "source": "pantry"
       }
     ],
     "steps": [
-      "Rim a coupe or rocks glass with salt",
-      "Add mezcal, lime juice, and simple syrup to a shaker with ice",
-      "Shake vigorously and strain into the prepared glass",
-      "Serve up or over ice"
-    ],
-    "why": "Del Maguey Vida's bright, vegetal profile makes an excellent mezcal margarita. Fresh lime is essential; this drink lives or dies by citrus quality.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "40974e5f",
-    "scenario_id": "high_count_pad",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Boulevardier",
-    "description": "A rye-based cousin of the Negroni with herbal depth, stirred and served up\u2014sophisticated and warming.",
-    "ingredients": [
-      {
-        "name": "Rittenhouse Rye",
-        "quantity": "1.5 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Sweet vermouth",
-        "quantity": "1 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Campari",
-        "quantity": "1 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
-      },
-      {
-        "name": "Orange twist",
-        "quantity": "1",
-        "source": "perishable"
-      }
-    ],
-    "steps": [
-      "Add rye, sweet vermouth, and Campari to a mixing glass with ice",
-      "Stir for 30 seconds",
+      "Add rye, lemon juice, and simple syrup to a cocktail shaker with ice",
+      "Shake vigorously for 10 seconds",
       "Strain into a coupe glass",
-      "Express orange twist over the drink and drop in"
+      "Serve up"
     ],
-    "why": "Rittenhouse's spicy backbone pairs beautifully with vermouth and Campari. You'll need to acquire both vermouth and Campari for this one.",
+    "why": "A clean, spirit-forward sour that lets Rittenhouse's spicy rye character shine. It's balanced, refreshing, and feels classic without being fussy.",
     "suited_for": []
   },
   {
-    "suggestion_hash": "4eb0dbf9",
-    "scenario_id": "high_count_pad",
-    "occasion": "casual evening",
-    "mood": "surprise me",
-    "constraints": [],
-    "companions": [],
-    "name": "Mezcal Negroni",
-    "description": "A smoky, bitter-forward stirred cocktail that swaps gin for mezcal, creating an earthy, complex sipper.",
-    "ingredients": [
-      {
-        "name": "Del Maguey Vida Mezcal",
-        "quantity": "1 oz",
-        "source": "inventory"
-      },
-      {
-        "name": "Campari",
-        "quantity": "1 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Sweet vermouth",
-        "quantity": "1 oz",
-        "source": "missing"
-      },
-      {
-        "name": "Ice",
-        "quantity": "as needed",
-        "source": "pantry"
-      },
-      {
-        "name": "Orange twist",
-        "quantity": "1",
-        "source": "perishable"
-      }
-    ],
-    "steps": [
-      "Add mezcal, Campari, and sweet vermouth to a mixing glass with ice",
-      "Stir for 30 seconds",
-      "Strain into a coupe or rocks glass",
-      "Express orange twist and drop in as garnish"
-    ],
-    "why": "Del Maguey's smoke and minerality create a distinctive, contemplative Negroni. Campari and sweet vermouth are the missing pieces.",
-    "suited_for": []
-  },
-  {
-    "suggestion_hash": "ecdb117d",
+    "suggestion_hash": "e78a65a4",
     "scenario_id": "companion_smoke_sweet",
     "occasion": "backyard hangout",
     "mood": null,
@@ -917,21 +951,21 @@
       }
     ],
     "name": "Mezcal Negroni",
-    "description": "A smoky, spirit-forward aperitif with bitter and herbal notes\u2014the mezcal replaces gin for a distinctly earthy character.",
+    "description": "A smoky, spirit-forward aperitif with mezcal, Campari, and dry vermouth\u2014herbaceous and complex without cloying sweetness.",
     "ingredients": [
       {
         "name": "Del Maguey Vida Mezcal",
-        "quantity": "1 oz",
+        "quantity": "0.75 oz",
         "source": "inventory"
       },
       {
         "name": "Campari",
-        "quantity": "1 oz",
+        "quantity": "0.75 oz",
         "source": "inventory"
       },
       {
-        "name": "Carpano Antica Sweet Vermouth",
-        "quantity": "1 oz",
+        "name": "Dolin Dry Vermouth",
+        "quantity": "0.75 oz",
         "source": "inventory"
       },
       {
@@ -946,22 +980,23 @@
       },
       {
         "name": "Orange peel",
-        "quantity": null,
+        "quantity": "1",
         "source": "perishable"
       }
     ],
     "steps": [
-      "Stir mezcal, Campari, and Carpano Antica with ice until well-chilled",
-      "Strain into a rocks glass over fresh ice",
-      "Express orange peel oils over the drink and drop as garnish"
+      "Add mezcal, Campari, dry vermouth, and bitters to a mixing glass with ice",
+      "Stir until well-chilled, about 30 seconds",
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Express orange peel oils over the drink and drop in as garnish"
     ],
-    "why": "Plays directly to Alex's love of smoky mezcal while delivering the complex, bitter-herbal profile they prefer. The Campari and vermouth add depth without cloying sweetness.",
+    "why": "Alex loves smoky mezcal and dislikes sweet\u2014this drink leans into smoke and herbaceous complexity with zero residual sweetness. It's a backyard-friendly sipper that showcases the mezcal.",
     "suited_for": [
       "Alex"
     ]
   },
   {
-    "suggestion_hash": "bb1e98fb",
+    "suggestion_hash": "4ea776be",
     "scenario_id": "companion_smoke_sweet",
     "occasion": "backyard hangout",
     "mood": null,
@@ -988,23 +1023,28 @@
         ]
       }
     ],
-    "name": "Cointreau Sidecar",
-    "description": "A classic brandy cocktail with bright citrus and subtle sweetness\u2014smooth, approachable, and fruit-forward.",
+    "name": "Rye & Cointreau Sour",
+    "description": "A bright, citrus-forward sour built on rye whiskey and Cointreau with a touch of sweetness and smooth body\u2014no bitters needed.",
     "ingredients": [
       {
-        "name": "Four Roses Small Batch",
+        "name": "Rittenhouse Rye",
         "quantity": "1.5 oz",
         "source": "inventory"
       },
       {
         "name": "Cointreau",
-        "quantity": "0.75 oz",
+        "quantity": "0.5 oz",
         "source": "inventory"
       },
       {
-        "name": "Lemon juice",
+        "name": "Fresh lemon juice",
         "quantity": "0.75 oz",
         "source": "perishable"
+      },
+      {
+        "name": "Simple syrup",
+        "quantity": "0.5 oz",
+        "source": "pantry"
       },
       {
         "name": "Ice",
@@ -1013,11 +1053,12 @@
       }
     ],
     "steps": [
-      "Shake Four Roses, Cointreau, and fresh lemon juice with ice",
-      "Strain into a coupe or cocktail glass",
-      "Serve up"
+      "Add rye, Cointreau, lemon juice, and simple syrup to a cocktail shaker with ice",
+      "Shake vigorously for 10\u201312 seconds until very cold",
+      "Strain into a coupe or rocks glass over fresh ice",
+      "Serve immediately"
     ],
-    "why": "Sam gravitates toward sweet and fruity drinks, and this delivers both: the Cointreau's orange liqueur sweetness pairs beautifully with bright lemon, while the bourbon adds warmth without bitterness.",
+    "why": "Sam enjoys sweet and fruity flavors and dislikes bitter\u2014this rye sour is balanced, citrusy, and approachable with no Campari or bitters. The Cointreau adds orange brightness and a touch of luxury to a backyard setting.",
     "suited_for": [
       "Sam"
     ]
@@ -1041,12 +1082,12 @@
         ]
       }
     ],
-    "name": "Negroni",
-    "description": "A classic equal-parts aperitivo cocktail balancing bitter Campari, herbal vermouth, and warming bourbon\u2014ideal for aperitivo hour with bold, dry flavors.",
+    "name": "Boulevardier",
+    "description": "A stirred aperitivo cocktail built on bourbon, Campari, and sweet vermouth\u2014bold, bittersweet, and perfectly suited to aperitivo hour. The Campari's herbal bite and Carpano's vanilla warmth create a sophisticated, low-ABV sipper.",
     "ingredients": [
       {
         "name": "Four Roses Small Batch",
-        "quantity": "1 oz",
+        "quantity": "1.5 oz",
         "source": "inventory"
       },
       {
@@ -1071,15 +1112,15 @@
       }
     ],
     "steps": [
-      "Add bourbon, Campari, and sweet vermouth to a mixing glass with ice",
-      "Stir for 10\u201315 seconds until well-chilled",
-      "Strain into a rocks glass over fresh ice",
-      "Add 2 dashes of Angostura bitters",
+      "Add bourbon, Campari, sweet vermouth, and bitters to a mixing glass filled with ice",
+      "Stir for 10\u201312 seconds until well-chilled",
+      "Strain into a coupe or rocks glass over fresh ice",
       "Express an orange twist over the drink and drop it in as garnish"
     ],
-    "why": "Jamie loves bitter and amaro flavors and dislikes sweet\u2014this drink leads with Campari's dry bitterness and herbal complexity, with just enough vermouth sweetness to round it out. It's the quintessential aperitivo, designed to open the palate.",
+    "why": "This is the quintessential aperitivo cocktail\u2014bittersweet, spirit-forward, and designed to awaken the palate before a meal. It plays directly to Jamie's love of bitter and amaro notes while avoiding anything sweet or fruity.",
     "suited_for": [
-      "Jamie"
+      "Jamie",
+      "me"
     ]
   }
 ]
