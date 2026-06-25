@@ -119,7 +119,7 @@ SUPABASE_JWT_TOKEN=...    # project JWT secret (Settings → API)
 ## Run
 
 ```bash
-.venv/bin/python -m pytest -q                       # 88 unit tests (3 live RLS tests skipped)
+.venv/bin/python -m pytest -q                       # 105 unit tests (3 live RLS tests skipped without credentials)
 .venv/bin/python -m evals.run_evals                 # offline eval (mock responses, no tokens)
 .venv/bin/python -m evals.run_evals --live          # eval against the real model
 .venv/bin/python -m evals.run_evals --live --judge  # + LLM judge
@@ -156,12 +156,12 @@ would only become a design factor at thousands-of-users scale.
 
 ## Status
 
-**All Phase 6 (persistence) tasks complete** (pending P6.12 deploy + P6.11 live RLS run):
+**All Phase 6 (persistence) tasks complete:**
 - Supabase Auth (offline JWT verification, aud + role checks, service_role bypass guard)
 - Full CRUD for all 6 tables via supabase-py carrying the user JWT (RLS fires on every query)
 - Sessions + session_drinks with verdict → companion preference feedback (atomic via Postgres RPC)
 - Multi-tab SPA frontend: login, inventory, companions, recommend + verdict buttons
-- 88 passing unit tests (3 live RLS isolation tests skip without test credentials)
-- CI gate: pytest + offline eval `--strict` on every push
+- 105 passing unit tests (3 live RLS isolation tests require test credentials)
+- CI gate: pytest + offline eval `--strict` on every push; Railway redeploys on push to main via GitHub integration
 
 **Live demo:** https://barback-production.up.railway.app

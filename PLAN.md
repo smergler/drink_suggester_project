@@ -100,7 +100,7 @@ Goal: a clickable demo. Keep it minimal — no DB, no auth, hardcoded inventory 
 - [x] **4.6 Live demo link** + a screenshot. Commit.
       _Live demo URL in README + RESUME_STORY. Screenshot: Boulevardier + "Negroni" (mezcal/dry vermouth) — live name accuracy failure._
 
-## Task 5 — CI gate on the evals  ·  Status: in progress
+## Task 5 — CI gate on the evals  ·  Status: done
 
 - [x] **5.1 Create `.github/workflows/ci.yml`**: trigger on push/PR; Python 3.12; `pip install -r requirements.txt`.
       _Created at .github/workflows/ci.yml._
@@ -128,7 +128,7 @@ Goal: a clickable demo. Keep it minimal — no DB, no auth, hardcoded inventory 
 
 Same rules as Phase 1: atomic subtasks, exact files, a Verify step, commit at each green step.
 
-### P1 — Multi-model sweep  ·  Status: in progress (needs live run P1.4)
+### P1 — Multi-model sweep  ·  Status: done
 Goal: benchmark Haiku/Sonnet/Opus on the eval and choose one, with cost/latency in the picture.
 - [x] **P1.1 Parameterize the model.** In `recommender/llm.py`, add a `model` arg to `AnthropicClient.__init__`
       (default the current Haiku id). In `evals/run_evals.py` add `--model <id>` and pass it through.
@@ -327,7 +327,7 @@ Goal: log every LLM call so cost/latency/quality is inspectable, not guessed.
 - [x] **P5.4** Skipped — JSONL + summary is sufficient for portfolio purposes.
 - [x] **P5.5 Record** a sample summary in `RESUME_STORY`; commit.
 
-### P6 — The real backend (breadth)  ·  Status: not started
+### P6 — The real backend (breadth)  ·  Status: done
 Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supabase client + user JWT, NO asyncpg.**
 - [x] **P6.0 Write `docs/backend-spec.md`** — the authoritative backend spec. Must cover: data model
       (inventory, companions, sessions, session_drinks), endpoint surface, and explicitly resolve each of these
@@ -335,7 +335,8 @@ Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supa
       (`limit`/`offset` everywhere or nowhere — pick one), a **unique key** for upsert/dedup (e.g. `UNIQUE(user_id, name)`),
       the **companion-feedback verdict→like/dislike rule**, and a concrete definition of **"current session"**.
       _Written + reviewed + revised. Key fixes: RPC for atomic preference reversal (ON CONFLICT DO UPDATE); partial unique index for one-open-session-per-user; /sessions/active not /sessions/current (routing conflict); cross-user companion guard documented; PUT /companions/{id} added; GET /sessions/{id} added; trigger statements completed._
-- [ ] **P6.1 🧑 Create the Supabase project**; collect URL, anon key, service key, JWT secret (human).
+- [x] **P6.1 🧑 Create the Supabase project**; collect URL, anon key, service key, JWT secret (human).
+      _Done by human; project jnifjkmnoudeuprpzzge linked in P6.3._
 - [x] **P6.2 Write `backend/migrations/001_init.sql`** from the spec: tables + `UNIQUE(user_id, name)` where
       needed + RLS policies (`auth.uid() = user_id`) + `updated_at` trigger.
       _Written. Includes partial unique index for one-open-session-per-user, RLS on all 6 tables, upsert RPCs, idempotent (DROP IF EXISTS on policies/triggers)._
@@ -358,6 +359,7 @@ Goal: multi-user persistence. **Follow `docs/adr-001-data-isolation.md` — Supa
       _Multi-tab SPA with Supabase JS auth, inventory CRUD, companions + preference viewer, recommend + verdict buttons; `/config` endpoint exposes public keys; browser UI untested (requires live Supabase)._
 - [x] **P6.11 RLS isolation test:** two users; confirm user A cannot read/write user B's rows.
       _`tests/test_rls_isolation.py`; 3 tests (read + write + companion isolation); auto-skipped without TEST_USER_A/B credentials; 🧑 create two Supabase test accounts + add to .env to run live._
-- [ ] **P6.12 🧑 Deploy** (Railway backend + Supabase + Vercel/static frontend); set all secrets (human).
+- [x] **P6.12 🧑 Deploy** (Railway backend + Supabase + Vercel/static frontend); set all secrets (human).
+      _Done. Live: https://barback-production.up.railway.app (Railway GitHub integration redeploys on push to main)._
 - [x] **P6.13 Update** `README.md` + `RESUME_STORY.md`; commit.
       _Architecture section updated with full persistence layer; status reflects 88 tests + P6 complete; RESUME_STORY.md adds 6 persistence engineering decisions._

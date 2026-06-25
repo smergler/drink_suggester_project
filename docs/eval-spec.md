@@ -55,7 +55,7 @@ are *not* excluded, so generic "rye" still matches an owned "Rittenhouse Rye".
 *usefulness*. A drink that flags every ingredient `missing` is 100% grounded but uses
 zero owned bottles — honest, but not makeable.
 
-## Metric 2 — Makeable rate  *(planned — PLAN Task 1)*
+## Metric 2 — Makeable rate  *(implemented)*
 
 Complements grounding. Definitions:
 - `uses_inventory` — the suggestion has ≥1 `inventory` ingredient that matches an owned bottle.
@@ -65,25 +65,28 @@ Applies only to **open-ended** requests (occasion/mood). A user who explicitly d
 named classic ("make a Mai Tai") accepts a shopping list, so named-drink scenarios are
 exempt (`Scenario.open_ended = False`).
 
-## Metric 3 — LLM-as-judge  *(implemented; not yet run live — PLAN Task 2)*
+## Metric 3 — LLM-as-judge  *(implemented; run live; calibrated against human labels — P2)*
 
 For the subjective dimensions deterministic checks can't see (`evals/judge.py`,
 `JudgeVerdict`):
 - `constraints_respected` (bool, strict — any violated constraint → false)
 - `occasion_fit` (1–5)
 - `recipe_plausibility` (1–5)
-- *(planned: `name_accurate` — catches "a Boulevardier called a Negroni")*
+- `name_accurate` (bool — catches "a Boulevardier called a Negroni"; excluded from rate when absent)
+- `companion_targeting` (1–5, omitted when no companions present)
 
-`JudgeSummary` aggregates constraint pass-rate and average scores. The judge is itself an
-LLM and should be **calibrated against human labels** before being trusted (PLAN P2).
+`JudgeSummary` aggregates constraint pass-rate and average scores. The judge has been
+**calibrated against human labels** (P2 — 16 suggestions labeled; see `RESUME_STORY.md`).
 
 ## Scenarios
 
 `evals/fixtures.py` — each `Scenario` is `(id, request, inventory, note)` plus optional
-property assertions (`expect_count`, `expect_min_grounded_rate`). The set includes normal
-cases, constraint-heavy cases, sparse/honest cases, and an **adversarial** group of named
-classics whose key ingredient isn't owned (Negroni w/o gin, Sazerac w/o Peychaud's, Mai
-Tai bourbon-only, count=5 from 3 bottles) designed to tempt the model into faking ownership.
+property assertions (`expect_count`, `expect_min_grounded_rate`, `check_suited_for`). 14
+scenarios total: normal cases, constraint-heavy cases, sparse/honest cases, an
+**adversarial** group of named classics whose key ingredient isn't owned (Negroni w/o gin,
+Sazerac w/o Peychaud's, Mai Tai bourbon-only, count=5 from 3 bottles) designed to tempt
+the model into faking ownership, and two **companion** scenarios (opposite profiles, single
+companion) that validate `suited_for` targeting.
 
 Mock responses (`evals/mock_responses.py`) seed violations so the offline run exercises the
 scorers; the live model is scored on the same scenarios.

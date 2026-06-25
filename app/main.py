@@ -139,6 +139,7 @@ def recommend_drinks(
             "ingredients": [i.model_dump() for i in s.ingredients],
             "steps": s.steps,
             "why": s.why,
+            "suited_for": s.suited_for,
         }
         for s in result.suggestions
     ]

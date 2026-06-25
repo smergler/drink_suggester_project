@@ -186,9 +186,9 @@ SPA frontend, and a complete test suite covering every endpoint.
    explicitly checks session ownership before calling `list_session_drinks`. Two independent
    layers must fail before a cross-user read succeeds.
 
-**Test count:** 88 passing unit tests (no live Supabase), 3 live RLS isolation tests
-(skipped without test credentials). Every endpoint has: auth-required test, happy path,
-and relevant error paths (404, 409, 422).
+**Test count:** 105 passing unit tests (no live Supabase needed), 3 live RLS isolation
+tests (require test credentials; run live and passing — see P6.11). Every endpoint has:
+auth-required test, happy path, and relevant error paths (404, 409, 422).
 
 ---
 
@@ -234,15 +234,16 @@ and relevant error paths (404, 409, 422).
 ## RAG / retrieval (P3 — completed)
 
 **What was built:**
-- `scripts/fetch_cocktaildb.py` — fetched 426 canonical recipes from CocktailDB API into `data/cocktails.json`
-- `retrieval/index.py` — embeds each recipe (name + ingredients + instructions[:200]) with `all-MiniLM-L6-v2` (sentence-transformers); caches 426×384 vectors to `data/cocktails.vectors.npy`
+- `scripts/fetch_cocktaildb.py` — fetched 581 canonical recipes from CocktailDB API into `data/cocktails.json` (expanded from 426 via category filter)
+- `retrieval/index.py` — embeds each recipe (name + ingredients + instructions[:200]) with `all-MiniLM-L6-v2` (sentence-transformers); caches 581×384 vectors to `data/cocktails.vectors.npy`
 - `retrieval/search.py` — cosine similarity search; `search(query, k=5) -> list[Recipe]`
 - `build_context()` gains `use_retrieval=True` — appends top-5 retrieved recipes as canonical naming references *outside* the `<user_data>` fence
 - `run_evals.py` gains `--rag` flag for A/B comparison
 
-**Retrieval quality:** `evals/retrieval_eval.py` — recall@10 = **80% (8/10)**. Two misses:
+**Retrieval quality:** `evals/retrieval_eval.py` — recall@10 = **70% (7/10)**. Three misses:
 - "classic gin aperitivo bitter" → Negroni: vocabulary gap — the corpus recipe text doesn't use "aperitivo" or describe itself as bitter
 - "gin lemon sour egg white" → Gin Fizz/Tom Collins: CocktailDB doesn't include egg white for these, so the query terms don't match
+- "sparkling wine champagne prosecco" → Bellini/Kir Royale/Mimosa: query terms are too generic; all three recipes score similarly and none breaks into top-10
 
 **A/B eval results (with/without RAG, same 14 scenarios):**
 

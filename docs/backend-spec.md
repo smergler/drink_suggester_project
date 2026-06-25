@@ -55,13 +55,22 @@ simultaneously. Preference reversal replaces the row (handled atomically via RPC
 ### `sessions`
 
 ```sql
-id         uuid primary key default gen_random_uuid()
-user_id    uuid not null references auth.users(id) on delete cascade
-occasion   text not null
-mood       text
-created_at timestamptz not null default now()
-ended_at   timestamptz          -- null = session is open
+id            uuid primary key default gen_random_uuid()
+user_id       uuid not null references auth.users(id) on delete cascade
+occasion      text not null
+mood          text
+created_at    timestamptz not null default now()
+ended_at      timestamptz          -- null = session is open
+bottle_count  int                  -- snapshot of active bottle count at time of recommend call
+input_tokens  int                  -- accumulated input tokens across all recommend calls into session
+output_tokens int                  -- accumulated output tokens (sessions can have >1 recommend call)
+latency_ms    int                  -- latency of the most recent recommend call
 ```
+
+Telemetry columns (`bottle_count`, `input_tokens`, `output_tokens`, `latency_ms`) were added
+in migration `20260623000000_session_telemetry.sql`. Existing rows have NULL (best-effort).
+`input_tokens`/`output_tokens` accumulate on repeat calls rather than overwriting so the
+session total stays accurate.
 
 Partial unique index to prevent multiple open sessions per user:
 
@@ -97,6 +106,7 @@ name        text not null
 ingredients jsonb not null    -- list of {name, quantity, source} objects
 steps       jsonb not null default '[]'
 why         text not null default ''
+suited_for  jsonb not null default '[]'  -- names suited for this drink ("me" or companion names)
 verdict     text check (verdict in ('liked', 'disliked', 'neutral'))  -- null = not yet rated
 created_at  timestamptz not null default now()
 ```
@@ -233,13 +243,15 @@ Use `GET /companions/{id}/preferences` to fetch preferences for a specific compa
 ```
 GET    /sessions                          → list[Session]       (?limit=20&offset=0)
 GET    /sessions/active                   → Session             (404 if no open session)
+GET    /sessions/stats                    → SessionStats        (aggregate telemetry across all sessions)
 GET    /sessions/{id}                     → Session             (404 if not found/not owned)
 POST   /sessions/{id}/end                 → Session             (sets ended_at=now())
 GET    /sessions/{id}/drinks              → list[SessionDrink]
 ```
 
-**Route registration order:** `GET /sessions/active` MUST be registered before
-`GET /sessions/{id}` to prevent FastAPI matching "active" as a UUID path parameter.
+**Route registration order:** `GET /sessions/active` and `GET /sessions/stats` MUST be
+registered before `GET /sessions/{id}` to prevent FastAPI matching those literal strings
+as UUID path parameters.
 
 Sessions are created implicitly by `POST /recommend`, never by an explicit POST endpoint.
 
@@ -351,8 +363,11 @@ CREATE TRIGGER companions_updated_at
 ### Session
 ```json
 {"id": "uuid", "occasion": "movie night", "mood": "cozy",
- "created_at": "...", "ended_at": null, "companion_ids": ["uuid"]}
+ "created_at": "...", "ended_at": null, "companion_ids": ["uuid"],
+ "bottle_count": 18, "input_tokens": 612, "output_tokens": 823, "latency_ms": 4201}
 ```
+
+Telemetry fields are `null` for sessions created before P10 migration.
 
 ### SessionDrink
 ```json
@@ -360,5 +375,16 @@ CREATE TRIGGER companions_updated_at
  "ingredients": [{"name": "Four Roses Small Batch", "quantity": "1.5 oz", "source": "inventory"}],
  "steps": ["Stir with ice", "Strain into coupe"],
  "why": "Spirit-forward and warming.",
+ "suited_for": ["me", "Alex"],
  "verdict": null, "created_at": "..."}
 ```
+
+`suited_for` is an empty list when the drink suits everyone or no companions are present.
+
+### SessionStats
+```json
+{"total_sessions": 12, "total_input_tokens": 7344, "total_output_tokens": 9876,
+ "avg_latency_ms": 3821.4, "avg_bottle_count": 17.2}
+```
+
+NULL telemetry rows are excluded from averages.

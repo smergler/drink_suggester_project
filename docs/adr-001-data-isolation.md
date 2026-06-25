@@ -44,7 +44,7 @@ Rationale for this project:
   must *and* the DB must both fail before data leaks.
 - **Performance is irrelevant here.** This is a personal/portfolio-scale app; asyncpg's
   throughput edge buys nothing measurable and would cost the only real safety guarantee.
-- **It makes prompt 02's RLS real** instead of decorative — no rewrite of the schema work.
+- **It makes the P6 RLS policies real** instead of decorative — no rewrite of the schema work.
 - **Fewer moving parts** than Option 3, and defensible in an interview in one sentence.
 
 ## Consequences / guardrails

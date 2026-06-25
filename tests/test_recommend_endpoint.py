@@ -96,6 +96,8 @@ def test_recommend_saves_drinks_to_session():
     session_id_arg, drinks_arg = db.create_session_drinks.call_args.args
     assert session_id_arg == "s1"
     assert drinks_arg[0]["name"] == "Boulevardier"
+    assert "suited_for" in drinks_arg[0]
+    assert drinks_arg[0]["suited_for"] == []
 
 
 def test_recommend_writes_telemetry_when_usage_present():
